@@ -1,0 +1,124 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getProductsList, createProduct, changeProductPublic } from '../../http/productAPI'
+
+export const getProducts = createAsyncThunk(
+    'product/getProducts',
+    async function ( [ page = 1, limit = 10, category = 0 ] ) {
+        
+       try {
+            const data = await getProductsList( page, limit, category )
+           
+            return data
+        } catch (e) {
+            throw new Error(e.response.data.message)
+        }
+        
+    }
+)
+ 
+export const addProduct = createAsyncThunk(
+    'product/addProducts',
+    async function ( formData ) {
+       
+       try {
+            const data = await createProduct( formData )
+            console.log( data )
+            return data
+        } catch (e) {
+            throw new Error(e.response.data.message)
+        }
+        
+    }
+)
+
+export const changePublic = createAsyncThunk(
+    'product/changePublic',
+    async function ( [ id, publicProduct ], {rejectWithValue, dispatch} ) {
+        
+       try {
+            const data = await changeProductPublic( id, publicProduct )
+            dispatch(editOnePublic( { id, public: data.public}));
+            return data
+        } catch (e) {
+            throw new Error(e.response.data.message)
+        }
+            
+        
+    }
+)
+
+
+
+const setError = (state, action) => {
+    state.status = 'error';
+    state.error = action.error.message;
+}
+
+const setDefault = (state) => {
+    state.status = null;
+    state.error = null;
+}
+
+const productSlice = createSlice({
+    name: 'product',
+    initialState: {
+        data: [],
+        count: 0,
+        limit: 10,
+        status: null,
+        error: null,
+        copyId: 0,
+    },
+    reducers: {
+
+        addNew( state, action ){
+           
+        },
+
+        removeOne( state, action ){
+           
+        },
+
+        editOne( state, action ){
+            
+        },
+
+        copyProduct( state, action ){
+            state.status = "copy"
+            state.copyId = action.payload
+        },
+
+        editOnePublic( state, action ){
+            const productItem = state.data.find(category => category.id === action.payload.id);
+            productItem.public = action.payload.public;
+        }
+    },
+
+    extraReducers: builder => {
+        builder
+
+        .addCase(getProducts.fulfilled, (state, action) => {
+            setDefault( state )
+            state.data = action.payload.rows
+            state.count = action.payload.count
+            state.status = 'load'
+        })
+
+        .addCase(addProduct.fulfilled, ( state, action ) => {
+            setDefault( state )
+            state.status = 'load'
+        })
+
+        .addCase(changePublic.fulfilled, ( state, action ) => {
+            setDefault( state )
+            state.status = 'load'
+        } )
+    }
+
+   
+
+});
+
+export const { addNew, removeOne, editOne, editOnePublic, copyProduct } = productSlice.actions;
+
+export default productSlice.reducer;
