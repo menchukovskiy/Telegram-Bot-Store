@@ -23,38 +23,30 @@ const ModifiersEdit = () => {
 
     const dispatch = useDispatch()
     const modifiersStore = useSelector(state => state.modifiers)
-
-    useEffect(() => {
-        if( modifiersStore.status !== 'load' ){
-            dispatch(getAllMod())
-        }
-        
-    }, [dispatch])
-
-
-    console.log(modifiersStore.data)
-   
+    const modData = modifiersStore.data.find(mod => mod.id === id)
 
     let initialState = {
         name: '',
         list: [{ id:1, name: '' }]
     }
 
-    const modData = modifiersStore.data.find(mod => mod.id === id)
 
-    if ( modData !== undefined ) {
+    
+    if( localStorage.getItem('MD_EDIT') ){
+        initialState = JSON.parse(localStorage.getItem('MD_EDIT'))
+    } else if( modData !== undefined ) {
         initialState = {
             name: modData.name,
             list: modData.list
         }
+
+        localStorage.setItem( 'MD_EDIT', JSON.stringify(initialState) )
     }
 
     const [successModal, setSuccessModal] = useState(false)
     const nameMod = useInput(initialState.name, { isEmpty: true, maxLength: 200 })
     const [listMod, setListMod] = useState(initialState.list)
 
-  
-    
     const handlerAddList = () => {
         setListMod([...listMod, { id:listMod[listMod.length - 1].id + 1, name: '' } ])
       
@@ -90,11 +82,18 @@ const ModifiersEdit = () => {
 
     const editMod = () => {
         dispatch( edit( [ id, nameMod.value, listMod ] ) )
+        localStorage.removeItem('MD_EDIT')
         setSuccessModal(true)
     }
 
+    useEffect(() => {
+        if( modifiersStore.status !== 'load' ){
+            dispatch(getAllMod())
+        }
+         
+    }, [dispatch])
 
-    if ( modData === undefined && modifiersStore.status === 'load'  ) {
+    if ( modData === undefined && modifiersStore.status === 'load' || initialState.name === '' ) {
         return <Navigate to={CONTROL_PANEL_ROUTE + '/modifiers'} />
     } 
 

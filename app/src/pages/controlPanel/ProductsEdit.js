@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { getText } from '../../utils/language'
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate, Navigate } from "react-router-dom"
 import { getAll } from '../../store/slice/categorySlice';
-import { getProducts, addProduct } from '../../store/slice/productSlice';
-import { Navigate } from "react-router-dom"
 import { CONTROL_PANEL_ROUTE, CUR_LIST, CUR, COUNT_SUB_PHOTO_PRODUCT } from '../../utils/const'
 import { Box, TextField, Typography, FormControl, Select, InputLabel, MenuItem, OutlinedInput, InputAdornment } from '@mui/material';
 import ModalSuccess from '../../components/controlPanel/modal/ModalSuccess';
@@ -17,16 +16,24 @@ import AddBtn from '../../components/controlPanel/button/AddBtn';
 import DelIconBtn from '../../components/controlPanel/button/DelIconBtn';
 import { getAllMod } from '../../store/slice/modifiersSlice'
 import ModalAddModForProduct from '../../components/controlPanel/modal/ModalAddModForProduct';
+import { getProducts } from '../../store/slice/productSlice';
 
-const ProductsAdd = () => {
- 
-    const dispatch = useDispatch()
+const ProductsEdit = () => {
+
     
+
+    const dispatch = useDispatch()
     const user = useSelector(state => state.user.user)
     const categoryStore = useSelector(state => state.category)
     const productStore = useSelector(state => state.product)
     const botStore = useSelector(state => state.bot)
     const modifiersStore = useSelector(state => state.modifiers)
+
+    const location = useLocation()
+    const pathArray = location.pathname.split('/')
+    const id = parseInt(pathArray[pathArray.length - 1])
+
+    const productData = productStore.data.find(pr => pr.id === id)
 
     let initialState = {
         name: '',
@@ -34,7 +41,28 @@ const ProductsAdd = () => {
         currency: botStore.currency,
         price: '',
         about: '',
-        productModList: []
+        productModList: [],
+        cover: ''
+    }
+
+    if( localStorage.getItem('PR_EDIT') ){
+        initialState = JSON.parse(localStorage.getItem('PR_EDIT'))
+    } else if( productData !== undefined ) {
+        initialState = {
+            name: productData.name,
+            category: productData.category,
+            currency: productData.currency,
+            price: productData.price,
+            about: productData.description,
+            productModList: [],
+            cover: ''
+        }
+
+        if( productData.description !== 'none.jpg' ){
+            initialState.cover = productData.description
+        }
+
+        localStorage.setItem( 'PR_EDIT', JSON.stringify(initialState) )
     }
 
 
@@ -58,17 +86,8 @@ const ProductsAdd = () => {
     }, [dispatch])
 
 
-    if (productStore.status === "copy") {
-        const copyProductData = productStore.data.find(pr => pr.id === productStore.copyId);
-        initialState = {
-            name: copyProductData.name,
-            category: copyProductData.category,
-            currency: copyProductData.currency,
-            price: copyProductData.price,
-            about: copyProductData.description,
-            productModList: productStore.copyModList
-        }
-    } 
+    
+
 
     const [productModList, setproductModList] = useState(initialState.productModList)
     const [successModal, setSuccessModal] = useState(false)
@@ -79,7 +98,7 @@ const ProductsAdd = () => {
     const [currencyIcon, setCurrencyIcon] = useState(CUR_LIST[initialState.currency])
     const [price, setPrice] = useState(initialState.price)
     const [about, setAbout] = useState(initialState.about)
-    const [cover, setCover] = useState('')
+    const [cover, setCover] = useState(initialState.cover)
     const [listImg, setList] = useState([
         {
             name : 'sub_photo_0',
@@ -99,8 +118,9 @@ const ProductsAdd = () => {
         }
     ])
 
-    
+  
 
+    
     const checkDisable = () => {
         if (nameProduct.value !== '') {
             return false
@@ -108,9 +128,10 @@ const ProductsAdd = () => {
         return true
     }
 
-    if (productStore.count >= user.info.package.product_limit) {
+
+    if ( productData === undefined && productStore.status === 'load'  ) {
         return <Navigate to={CONTROL_PANEL_ROUTE + '/products'} />
-    }
+    } 
 
     const handleChangeCategory = (event) => {
         setCategory(event.target.value);
@@ -177,58 +198,17 @@ const ProductsAdd = () => {
         } ) )
     }
 
-    
-
-    const createProduct = () => {
-        const formData = new FormData()
-        formData.append('name', nameProduct.value)
-        formData.append('category', category)
-        formData.append('price', price)
-        formData.append('currency', currency)
-        formData.append('description', about)
-       
-        if( typeof cover === 'string' ){
-            formData.append('cover', 'non.jpg')            
-        } else {
-            formData.append('cover', 'file') 
-            formData.append('coverImg', cover) 
-        }
-        
-        listImg.forEach( item => formData.append(item.name, item.data) )
-        
-        formData.append('modifiers', JSON.stringify(productModList))
-       
-        dispatch( addProduct(formData) )
-        setSuccessModal(true)
+    const handlerEdit = () => {
+        localStorage.removeItem('PR_EDIT')
     }
 
-    
+
 
     return (
         <Box>
-            <ModalAddModForProduct
-                open={addModModal}
-                onClose={
-                    () => {
-                        setAddModModal(false)
-                    }
-                }
-                modStore={modifiersStore.data}
-                listMod={productModList}
-                add={addLineModList}
-            />
-            <ModalSuccess
-                message={'TEXT_SUCCESS_ADD_PRODUCT'}
-                open={successModal}
-                onClose={
-                    () => {
-                        setSuccessModal(false)
-                    }
-                }
-            />
             <Box className="cp_top_bar" display="flex" alignItems="center" justifyContent="space-between" p={2} >
                 <BackBtn />
-                <SaveBtn status={productStore.status} disabled={checkDisable()} variant="contained" color="success" onClick={createProduct} />
+                <SaveBtn status={productStore.status} disabled={checkDisable()} variant="contained" color="success" onClick={handlerEdit} />
             </Box>
 
             <Box>
@@ -397,4 +377,4 @@ const ProductsAdd = () => {
     );
 };
 
-export default ProductsAdd;
+export default ProductsEdit;

@@ -1,4 +1,3 @@
-
 import {Route, Routes } from 'react-router-dom'
 import Category from '../pages/controlPanel/Category'
 import Dashboard from '../pages/controlPanel/Dashboard'
@@ -16,6 +15,7 @@ import Modifiers from '../pages/controlPanel/Modifiers'
 import ModifiersAdd from '../pages/controlPanel/ModifiersAdd'
 import ModifiersEdit from '../pages/controlPanel/ModifiersEdit'
 import ProductsAdd from '../pages/controlPanel/ProductsAdd'
+import ProductsEdit from '../pages/controlPanel/ProductsEdit'
 
 const ControlPanelRouter =  () => {
     
@@ -33,6 +33,7 @@ const ControlPanelRouter =  () => {
             <Route  path='/stock' element={<Stock/>}  />
             <Route  path='/products' element={<Products/>}  />
             <Route  path='/products/add' element={<ProductsAdd/>}  />
+            <Route  path='/products/edit/*' element={<ProductsEdit/>}  />
             <Route  path='/orders' element={<Orders/>}  />
             <Route  path='/customer' element={<Customer/>}  />
             <Route  path='/faq' element={<Faq/>}  />

@@ -11,7 +11,8 @@ import EditIconBtn from '../../components/controlPanel/button/EditIconBtn'
 import LoadBox from '../../components/controlPanel/load/loadBox';
 
 const Modifiers = () => {
-
+    localStorage.removeItem('MD_EDIT')
+    
     const history = useNavigate()
 
     const addMod = () => {

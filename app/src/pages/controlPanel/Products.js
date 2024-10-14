@@ -14,6 +14,7 @@ import EditIconBtn from '../../components/controlPanel/button/EditIconBtn'
 
 const Products = () => {
 
+    localStorage.removeItem('PR_EDIT')
     const dispatch = useDispatch()
     const history = useNavigate()
     const user = useSelector(state => state.user.user)
@@ -67,7 +68,7 @@ const Products = () => {
     }
 
     const handlerEditProduct = ( id ) => {
-        
+        history('edit/' + id)
     }
 
     const handlerRemoveProduct = ( id ) => {
