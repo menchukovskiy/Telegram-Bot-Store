@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getProductsList, createProduct, changeProductPublic } from '../../http/productAPI'
+import { getProductsList, createProduct, changeProductPublic, removeProductById } from '../../http/productAPI'
 
 export const getProducts = createAsyncThunk(
     'product/getProducts',
@@ -38,6 +38,22 @@ export const changePublic = createAsyncThunk(
        try {
             const data = await changeProductPublic( id, publicProduct )
             dispatch(editOnePublic( { id, public: data.public}));
+            return data
+        } catch (e) {
+            throw new Error(e.response.data.message)
+        }
+            
+        
+    }
+)
+
+export const removeProduct = createAsyncThunk(
+    'product/removeProduct',
+    async function ( id ) {
+        
+       try {
+            const data = await removeProductById( id )
+           
             return data
         } catch (e) {
             throw new Error(e.response.data.message)
@@ -110,6 +126,11 @@ const productSlice = createSlice({
         })
 
         .addCase(changePublic.fulfilled, ( state, action ) => {
+            setDefault( state )
+            state.status = 'load'
+        } )
+
+        .addCase(removeProduct.fulfilled, ( state, action ) => {
             setDefault( state )
             state.status = 'load'
         } )

@@ -130,7 +130,18 @@ export const createProduct = async ( formData ) => {
 export const changeProductPublic = async ( id, publicProduct ) => {
     if( localStorage.getItem('token') ){
         try{
-            const { data } = await $authHost.put( 'api/product/public', { id, publicProduct } )
+            const { data } = await $authHost.put( 'api/product/', { id, publicProduct } )
+            return data
+        } catch(e){
+            return false
+        }
+    }
+}
+
+export const removeProductById = async ( id ) => {
+    if( localStorage.getItem('token') ){
+        try{
+            const { data } = await $authHost.delete( 'api/product/' + id )
             return data
         } catch(e){
             return false

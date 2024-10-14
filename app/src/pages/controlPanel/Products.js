@@ -4,7 +4,7 @@ import { getText } from '../../utils/language'
 import { tokens } from "../../theme"
 import { useDispatch, useSelector } from 'react-redux';
 import { getAll } from '../../store/slice/categorySlice';
-import { getProducts, changePublic, copyProduct } from '../../store/slice/productSlice';
+import { getProducts, changePublic, copyProduct, removeProduct } from '../../store/slice/productSlice';
 import AddBtn from '../../components/controlPanel/button/AddBtn'
 import { useNavigate, useLocation, } from 'react-router-dom'
 import { CUR_LIST, CUR } from '../../utils/const'
@@ -71,7 +71,7 @@ const Products = () => {
     }
 
     const handlerRemoveProduct = ( id ) => {
-        
+         dispatch( removeProduct( id ) )
     }
 
     
