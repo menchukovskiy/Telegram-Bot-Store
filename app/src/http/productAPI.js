@@ -149,3 +149,14 @@ export const removeProductById = async ( id, pegData ) => {
         }
     }
 }
+
+export const getListModForProduct = async ( id ) => {
+    if( localStorage.getItem('token') ){
+        try{
+            const { data } = await $authHost.get( 'api/product/mod_list/' + id )
+            return data
+        } catch(e){
+            return false
+        }
+    }
+}

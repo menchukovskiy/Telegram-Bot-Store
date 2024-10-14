@@ -3,7 +3,7 @@ import { getText } from '../../utils/language'
 import { tokens } from "../../theme"
 import { useDispatch, useSelector } from 'react-redux';
 import { getAll } from '../../store/slice/categorySlice';
-import { getProducts, addProduct } from '../../store/slice/productSlice';
+import { getProducts, addProduct, getCopyMod } from '../../store/slice/productSlice';
 import { Navigate } from "react-router-dom"
 import { CONTROL_PANEL_ROUTE, CUR_LIST, CUR, COUNT_SUB_PHOTO_PRODUCT } from '../../utils/const'
 import { Box, TextField, Typography, FormControl, Select, InputLabel, MenuItem, OutlinedInput, InputAdornment } from '@mui/material';
@@ -33,7 +33,8 @@ const ProductsAdd = () => {
         category: '',
         currency: botStore.currency,
         price: '',
-        about: ''
+        about: '',
+        productModList: []
     }
 
     useEffect(() => {
@@ -44,8 +45,8 @@ const ProductsAdd = () => {
         if (categoryStore.status !== 'load') {
             dispatch(getAll())
         }
-
-        if (productStore.status !== 'load') {
+        
+        if (productStore.status !== 'load' ) {
             dispatch(getProducts([]))
         }
 
@@ -55,20 +56,23 @@ const ProductsAdd = () => {
 
     }, [dispatch])
 
+
     if (productStore.status === "copy") {
-        const copyProductData = productStore.data.find(pr => pr.id === productStore.copyId)
+        
+        const copyProductData = productStore.data.find(pr => pr.id === productStore.copyId);
+
         initialState = {
             name: copyProductData.name,
             category: copyProductData.category,
             currency: copyProductData.currency,
             price: copyProductData.price,
-            about: copyProductData.description
+            about: copyProductData.description,
+            productModList: productStore.copyModList
         }
-    }
+        
+    } 
 
-
-
-    const [productModList, setproductModList] = useState([])
+    const [productModList, setproductModList] = useState(initialState.productModList)
     const [successModal, setSuccessModal] = useState(false)
     const [addModModal, setAddModModal] = useState(false)
     const nameProduct = useInput(initialState.name, { isEmpty: true, maxLength: 200 })
@@ -105,8 +109,6 @@ const ProductsAdd = () => {
         }
         return true
     }
-
-    
 
     if (productStore.count >= user.info.package.product_limit) {
         return <Navigate to={CONTROL_PANEL_ROUTE + '/products'} />
@@ -180,9 +182,6 @@ const ProductsAdd = () => {
     
 
     const createProduct = () => {
-        
-        
- 
         const formData = new FormData()
         formData.append('name', nameProduct.value)
         formData.append('category', category)
@@ -197,14 +196,10 @@ const ProductsAdd = () => {
             formData.append('coverImg', cover) 
         }
         
-        
         listImg.forEach( item => formData.append(item.name, item.data) )
         
         formData.append('modifiers', JSON.stringify(productModList))
        
-        
-        
-
         dispatch( addProduct(formData) )
         setSuccessModal(true)
     }
@@ -345,10 +340,6 @@ const ProductsAdd = () => {
                     <Box p={2} >
                         {productModList.map((item, key) =>
                             <Box sx={{ marginBottom: '20px' }} key={item.listId} display="flex" alignItems="center" justifyContent="space-between">
-                                <input type='hidden' name={'modifiers_id_' + key} value={item.modId} />
-                                <input type='hidden' name={'list_id_' + key} value={item.listId} />
-                                <input type='hidden' name={'count_' + key} value={item.count} />
-                                <input type='hidden' name={'price_' + key} value={item.price} />
                                 <TextField
                                     fullWidth
                                     value={modifiersStore.data.filter(i => i.id === item.modId)[0]['name']}

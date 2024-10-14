@@ -13,6 +13,8 @@ router.put('/public', authMiddleware,  userProductController.changePublic)
 
 router.delete( '/:id', authMiddleware, userProductController.remove )
 
+router.get( '/mod_list/:id', authMiddleware, userProductController.getModListForProduct )
+
 
 
 module.exports = router

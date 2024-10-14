@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getProductsList, createProduct, changeProductPublic, removeProductById } from '../../http/productAPI'
+import { getProductsList, createProduct, changeProductPublic, removeProductById, getListModForProduct } from '../../http/productAPI'
 
 export const getProducts = createAsyncThunk(
     'product/getProducts',
@@ -65,6 +65,24 @@ export const removeProduct = createAsyncThunk(
 
 
 
+export const copyProduct = createAsyncThunk(
+    'product/copyProduct',
+    async function ( id, {dispatch} ) {
+        dispatch(copy(id))
+       try {
+            const data = await getListModForProduct( id )
+            
+            return data
+        } catch (e) {
+            throw new Error(e.response.data.message)
+        }
+            
+        
+    }
+)
+
+
+
 const setError = (state, action) => {
     state.status = 'error';
     state.error = action.error.message;
@@ -86,6 +104,7 @@ const productSlice = createSlice({
         status: null,
         error: null,
         copyId: 0,
+        copyModList: []
     },
     reducers: {
 
@@ -107,7 +126,7 @@ const productSlice = createSlice({
             state.category = action.payload.category
         },
 
-        copyProduct( state, action ){
+        copy( state, action ){
             state.status = "copy"
             state.copyId = action.payload
         },
@@ -144,12 +163,25 @@ const productSlice = createSlice({
             state.count = action.payload.count
             state.status = 'load'
         } )
+
+        .addCase( copyProduct.fulfilled, ( state, action ) => {
+            if( action.payload.length ){
+                action.payload.forEach( mod => {
+                    state.copyModList.push({
+                        modId: mod.id_modifiers, 
+                        listId: mod.value, 
+                        count: mod.count, 
+                        price: mod.price
+                    })
+                } )
+            }
+        } )
     }
 
    
 
 });
 
-export const { addNew, removeOne, editOne, editOnePublic, copyProduct, setDataPegNav, getPegNavData } = productSlice.actions;
+export const { addNew, removeOne, editOne, editOnePublic, copy, setDataPegNav, getPegNavData } = productSlice.actions;
 
 export default productSlice.reducer;
