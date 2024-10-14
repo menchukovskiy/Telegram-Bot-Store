@@ -14,6 +14,7 @@ class UserProductController {
 
     async changePublic(req, res, next) {
         const { id, publicProduct } = req.body
+
         const product = await UserProduct.findOne({ where: { userId: req.user.id, id } })
 
         if (!product) {
@@ -231,16 +232,6 @@ class UserProductController {
         }
 
         return res.json(products)
-
-        return res.status(200).send({
-            status: 'success',
-            id: id
-        })
-
-
-
-
-
 
     }
 

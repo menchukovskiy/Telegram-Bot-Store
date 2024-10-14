@@ -63,8 +63,6 @@ export const removeProduct = createAsyncThunk(
     }
 )
 
-
-
 export const copyProduct = createAsyncThunk(
     'product/copyProduct',
     async function ( id, {dispatch} ) {
@@ -80,8 +78,6 @@ export const copyProduct = createAsyncThunk(
         
     }
 )
-
-
 
 const setError = (state, action) => {
     state.status = 'error';
@@ -107,18 +103,6 @@ const productSlice = createSlice({
         copyModList: []
     },
     reducers: {
-
-        addNew( state, action ){
-           
-        },
-
-        removeOne( state, action ){
-           
-        },
-
-        editOne( state, action ){
-            
-        },
 
         setDataPegNav( state, action ){
             state.limit = action.payload.limit
@@ -182,6 +166,6 @@ const productSlice = createSlice({
 
 });
 
-export const { addNew, removeOne, editOne, editOnePublic, copy, setDataPegNav, getPegNavData } = productSlice.actions;
+export const { editOnePublic, copy, setDataPegNav, getPegNavData } = productSlice.actions;
 
 export default productSlice.reducer;
