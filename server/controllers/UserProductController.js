@@ -69,7 +69,7 @@ class UserProductController {
             }
 
             if (price === '' || Number(price) < 0 ) {
-                price = 0
+                price = 0 
             }
 
             
@@ -78,7 +78,7 @@ class UserProductController {
             
             
             
-            if( cover === '' ){
+            if( cover === 'file' ){
                 const { coverImg } = req.files
                 
                
@@ -180,7 +180,56 @@ class UserProductController {
     }
 
     async remove( req, res, next ) {
+        const { id } = req.params
+        const userId = req.user.id
+
+
+        const findProductImgByid = await ProductImage.findAll({ where : { userProductId : id } })
+
+        if( findProductImgByid.length ){
+            const removeProductImg = await findProductImgByid.destroy()
+            findProductImgByid.forEach( prImg => {
+                fs.unlinkSync(path.resolve(__dirname, '..', 'static', prImg.img))
+            } )
+        }
+       
+
         
+
+        const findProductByid = await UserProduct.findOne({ where: { userId, id } })
+
+        if (!findProductByid) {
+            return next(ApiError.badRequest('Product not found!'))
+        }
+
+
+        
+
+        const removeProduct = await findProductByid.destroy({
+            include: {
+                model: UserProductsModifiers,
+                where: {
+                    userProductId: id
+                }
+            }
+        },)
+
+        if (!removeProduct) {
+            return next(ApiError.badRequest('The product was not deleted!'))
+        }
+
+        if( findProductByid.cover !== "none.jpg" ){
+            fs.unlinkSync(path.resolve(__dirname, '..', 'static', findProductByid.cover))
+        }
+
+        
+
+        return res.status(200).send({
+            status: 'success',
+            id: id
+        })
+
+
     }
 
 }

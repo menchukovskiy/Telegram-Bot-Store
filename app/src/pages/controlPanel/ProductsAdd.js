@@ -77,7 +77,7 @@ const ProductsAdd = () => {
     const [currencyIcon, setCurrencyIcon] = useState(CUR_LIST[initialState.currency])
     const [price, setPrice] = useState(initialState.price)
     const [about, setAbout] = useState(initialState.about)
-    const [cover, setCover] = useState(null)
+    const [cover, setCover] = useState('')
     const [listImg, setList] = useState([
         {
             name : 'sub_photo_0',
@@ -191,17 +191,19 @@ const ProductsAdd = () => {
         formData.append('description', about)
        
         if( typeof cover === 'string' ){
-            formData.append('cover', 'non.jpg')  
+            formData.append('cover', 'non.jpg')            
         } else {
-            formData.append('cover', '')  
+            formData.append('cover', 'file') 
+            formData.append('coverImg', cover) 
         }
         
-        formData.append('coverImg', cover)
+        
         listImg.forEach( item => formData.append(item.name, item.data) )
         
         formData.append('modifiers', JSON.stringify(productModList))
        
-       
+        
+        
 
         dispatch( addProduct(formData) )
         setSuccessModal(true)

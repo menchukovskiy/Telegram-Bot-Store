@@ -74,7 +74,7 @@ const Products = () => {
          dispatch( removeProduct( id ) )
     }
 
-    
+    //console.log( localStorage.getItem('token') )
 
 
     return (
