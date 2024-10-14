@@ -184,20 +184,12 @@ class UserProductController {
         const userId = req.user.id
 
         
-
-       
-
-        
-
         const findProductByid = await UserProduct.findOne({ where: { userId, id } })
         const findProductImgByid = await ProductImage.findAll({ where : { userProductId : id } })
 
         if (!findProductByid) {
             return next(ApiError.badRequest('Product not found!'))
         }
-
-
-        
 
         const removeProduct = await findProductByid.destroy({
             include: {
@@ -227,13 +219,28 @@ class UserProductController {
             await ProductImage.destroy({ where : { userProductId : null } })
         }
         
+        
+        const { category, page, limit } = req.query
+        let offset = page * limit - limit
+        let products
+
+        if ( Number( category ) ) {
+            products = await UserProduct.findAndCountAll({ where: { category, userId }, limit, offset })
+        } else {
+           
+            products = await UserProduct.findAndCountAll({ where: { userId }, limit, offset })
+        }
+
+        return res.json(products)
 
         return res.status(200).send({
             status: 'success',
             id: id
         })
 
-        
+
+
+       
 
 
     }

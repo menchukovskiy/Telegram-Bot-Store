@@ -138,10 +138,11 @@ export const changeProductPublic = async ( id, publicProduct ) => {
     }
 }
 
-export const removeProductById = async ( id ) => {
+export const removeProductById = async ( id, pegData ) => {
+    
     if( localStorage.getItem('token') ){
         try{
-            const { data } = await $authHost.delete( 'api/product/' + id )
+            const { data } = await $authHost.delete( 'api/product/' + id, { params:{ limit: pegData.limit, page: pegData.page, category:pegData.category }}  )
             return data
         } catch(e){
             return false

@@ -3,11 +3,11 @@ import { getProductsList, createProduct, changeProductPublic, removeProductById 
 
 export const getProducts = createAsyncThunk(
     'product/getProducts',
-    async function ( [ page = 1, limit = 10, category = 0 ] ) {
-        
+    async function ( [ page = 1, limit = 10, category = 0 ], {dispatch} ) {
+      
        try {
             const data = await getProductsList( page, limit, category )
-           
+            dispatch(setDataPegNav( { page, limit, category}));
             return data
         } catch (e) {
             throw new Error(e.response.data.message)
@@ -22,7 +22,7 @@ export const addProduct = createAsyncThunk(
        
        try {
             const data = await createProduct( formData )
-            console.log( data )
+            
             return data
         } catch (e) {
             throw new Error(e.response.data.message)
@@ -49,10 +49,10 @@ export const changePublic = createAsyncThunk(
 
 export const removeProduct = createAsyncThunk(
     'product/removeProduct',
-    async function ( id ) {
-        
+    async function ( [id, pegData] ) {
+
        try {
-            const data = await removeProductById( id )
+            const data = await removeProductById( id, pegData )
            
             return data
         } catch (e) {
@@ -81,6 +81,8 @@ const productSlice = createSlice({
         data: [],
         count: 0,
         limit: 10,
+        page: 1,
+        category: 0,
         status: null,
         error: null,
         copyId: 0,
@@ -97,6 +99,12 @@ const productSlice = createSlice({
 
         editOne( state, action ){
             
+        },
+
+        setDataPegNav( state, action ){
+            state.limit = action.payload.limit
+            state.page = action.payload.page
+            state.category = action.payload.category
         },
 
         copyProduct( state, action ){
@@ -132,6 +140,8 @@ const productSlice = createSlice({
 
         .addCase(removeProduct.fulfilled, ( state, action ) => {
             setDefault( state )
+            state.data = action.payload.rows
+            state.count = action.payload.count
             state.status = 'load'
         } )
     }
@@ -140,6 +150,6 @@ const productSlice = createSlice({
 
 });
 
-export const { addNew, removeOne, editOne, editOnePublic, copyProduct } = productSlice.actions;
+export const { addNew, removeOne, editOne, editOnePublic, copyProduct, setDataPegNav, getPegNavData } = productSlice.actions;
 
 export default productSlice.reducer;

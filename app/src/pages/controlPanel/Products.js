@@ -34,7 +34,7 @@ const Products = () => {
 
     }, [dispatch])
 
-
+    
 
 
     const userCategory = categoryStore.data
@@ -71,7 +71,7 @@ const Products = () => {
     }
 
     const handlerRemoveProduct = ( id ) => {
-         dispatch( removeProduct( id ) )
+         dispatch( removeProduct( [id, { limit: productStore.limit, page: productStore.page, category: productStore.category }] ) )
     }
 
     //console.log( localStorage.getItem('token') )
