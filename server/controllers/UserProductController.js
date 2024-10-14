@@ -183,20 +183,14 @@ class UserProductController {
         const { id } = req.params
         const userId = req.user.id
 
+        
 
-        const findProductImgByid = await ProductImage.findAll({ where : { userProductId : id } })
-
-        if( findProductImgByid.length ){
-            const removeProductImg = await findProductImgByid.destroy()
-            findProductImgByid.forEach( prImg => {
-                fs.unlinkSync(path.resolve(__dirname, '..', 'static', prImg.img))
-            } )
-        }
        
 
         
 
         const findProductByid = await UserProduct.findOne({ where: { userId, id } })
+        const findProductImgByid = await ProductImage.findAll({ where : { userProductId : id } })
 
         if (!findProductByid) {
             return next(ApiError.badRequest('Product not found!'))
@@ -218,16 +212,28 @@ class UserProductController {
             return next(ApiError.badRequest('The product was not deleted!'))
         }
 
+        await UserProductsModifiers.destroy({ where: { userProductId: null } })
+
         if( findProductByid.cover !== "none.jpg" ){
             fs.unlinkSync(path.resolve(__dirname, '..', 'static', findProductByid.cover))
         }
 
+        if( findProductImgByid.length ){
+            
+            findProductImgByid.forEach( prImg => {
+                fs.unlinkSync(path.resolve(__dirname, '..', 'static', prImg.img))
+            } ) 
+
+            await ProductImage.destroy({ where : { userProductId : null } })
+        }
         
 
         return res.status(200).send({
             status: 'success',
             id: id
         })
+
+        
 
 
     }
