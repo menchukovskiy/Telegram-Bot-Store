@@ -11,6 +11,8 @@ router.get('/all', authMiddleware,  userProductController.getAll )
 
 router.put('/public', authMiddleware,  userProductController.changePublic)
 
+router.delete( '/:id', authMiddleware, userProductController.remove )
+
 
 
 module.exports = router

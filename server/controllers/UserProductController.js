@@ -179,6 +179,10 @@ class UserProductController {
 
     }
 
+    async remove( req, res, next ) {
+        
+    }
+
 }
 
 module.exports = new UserProductController()
