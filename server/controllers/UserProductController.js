@@ -251,6 +251,36 @@ class UserProductController {
 
     }
 
+    async getProductById(req, res, next){
+        const { id } = req.params
+        const userId = req.user.id
+        const findProductByid = await UserProduct.findOne({ where: { userId, id } })
+
+        if (!findProductByid) {
+            return next(ApiError.badRequest('Product not found!'))
+        }
+
+        const productModList = await UserProductsModifiers.findAll({ 
+            where: { userProductId: id },
+            order: [
+                ['id', 'ASC'],
+            ], 
+        })
+        const productImgList = await ProductImage.findAll({ 
+            where: { userProductId: id },
+            order: [
+                ['id', 'ASC'],
+            ],
+        })
+
+        res.status(200).send({
+            "data": findProductByid,
+            "modList": productModList,
+            "imgList": productImgList
+        })
+
+    }
+
 }
 
 module.exports = new UserProductController()

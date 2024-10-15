@@ -160,3 +160,14 @@ export const getListModForProduct = async ( id ) => {
         }
     }
 }
+
+export const getProductById = async ( id ) => {
+    if( localStorage.getItem('token') ){
+        try{
+            const { data } = await $authHost.get( 'api/product/' + id )
+            return data
+        } catch(e){
+            return false
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getProductsList, createProduct, changeProductPublic, removeProductById, getListModForProduct } from '../../http/productAPI'
+import { getProductsList, createProduct, changeProductPublic, removeProductById, getListModForProduct, getProductById } from '../../http/productAPI'
 
 export const getProducts = createAsyncThunk(
     'product/getProducts',
@@ -58,8 +58,6 @@ export const removeProduct = createAsyncThunk(
         } catch (e) {
             throw new Error(e.response.data.message)
         }
-            
-        
     }
 )
 
@@ -74,8 +72,20 @@ export const copyProduct = createAsyncThunk(
         } catch (e) {
             throw new Error(e.response.data.message)
         }
-            
+    }
+)
+
+export const editProduct = createAsyncThunk(
+    'product/editProduct',
+    async function ( id, {dispatch} ) {
         
+       try {
+            const data = await getProductById( id )
+            //dispatch(editOne(data))
+            return data
+        } catch (e) {
+            throw new Error(e.response.data.message)
+        }
     }
 )
 
@@ -100,7 +110,9 @@ const productSlice = createSlice({
         status: null,
         error: null,
         copyId: 0,
-        copyModList: []
+        copyModList: [],
+        editData: [],
+        editStatus: false
     },
     reducers: {
 
@@ -118,6 +130,10 @@ const productSlice = createSlice({
         editOnePublic( state, action ){
             const productItem = state.data.find(category => category.id === action.payload.id);
             productItem.public = action.payload.public;
+        },
+
+        editOne( state, action ){
+            state.editData = action.payload
         }
     },
 
@@ -160,12 +176,25 @@ const productSlice = createSlice({
                 } )
             }
         } )
+
+        .addCase( editProduct.fulfilled, (state, action)  => {
+            if( !action.payload ){
+                state.status = 'error';
+            } else {
+                state.editData = action.payload
+                state.editStatus = true
+            }
+        })
+
+        .addCase(editProduct.rejected, (state, action) => {
+            setError(state, action)
+        })
     }
 
    
 
 });
 
-export const { editOnePublic, copy, setDataPegNav, getPegNavData } = productSlice.actions;
+export const { editOnePublic, editOne, copy, setDataPegNav, getPegNavData } = productSlice.actions;
 
 export default productSlice.reducer;

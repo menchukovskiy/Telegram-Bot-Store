@@ -68,6 +68,10 @@ const ProductsAdd = () => {
             about: copyProductData.description,
             productModList: productStore.copyModList
         }
+
+        if( copyProductData.category === 0 ){
+            initialState.category = ''
+        }
     } 
 
     const [productModList, setproductModList] = useState(initialState.productModList)

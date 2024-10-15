@@ -16,7 +16,8 @@ import AddBtn from '../../components/controlPanel/button/AddBtn';
 import DelIconBtn from '../../components/controlPanel/button/DelIconBtn';
 import { getAllMod } from '../../store/slice/modifiersSlice'
 import ModalAddModForProduct from '../../components/controlPanel/modal/ModalAddModForProduct';
-import { getProducts } from '../../store/slice/productSlice';
+import { getProducts, editProduct } from '../../store/slice/productSlice';
+import { compose } from 'redux';
 
 const ProductsEdit = () => {
 
@@ -35,37 +36,6 @@ const ProductsEdit = () => {
 
     const productData = productStore.data.find(pr => pr.id === id)
 
-    let initialState = {
-        name: '',
-        category: '',
-        currency: botStore.currency,
-        price: '',
-        about: '',
-        productModList: [],
-        cover: ''
-    }
-
-    if( localStorage.getItem('PR_EDIT') ){
-        initialState = JSON.parse(localStorage.getItem('PR_EDIT'))
-    } else if( productData !== undefined ) {
-        initialState = {
-            name: productData.name,
-            category: productData.category,
-            currency: productData.currency,
-            price: productData.price,
-            about: productData.description,
-            productModList: [],
-            cover: ''
-        }
-
-        if( productData.description !== 'none.jpg' ){
-            initialState.cover = productData.cover
-        }
-
-        localStorage.setItem( 'PR_EDIT', JSON.stringify(initialState) )
-    }
-
-
     useEffect(() => {
         if (botStore.status !== 'load') {
             dispatch(getInfo())
@@ -74,10 +44,6 @@ const ProductsEdit = () => {
         if (categoryStore.status !== 'load') {
             dispatch(getAll())
         }
-        
-        if (productStore.status !== 'load' ) {
-            dispatch(getProducts([]))
-        }
 
         if (modifiersStore.status !== 'load') {
             dispatch(getAllMod())
@@ -85,10 +51,94 @@ const ProductsEdit = () => {
 
     }, [dispatch])
 
-
+   
     
 
+    let initialState = {
+        name: '',
+        category: '',
+        currency: botStore.currency,
+        price: '',
+        about: '',
+        productModList: [],
+        cover: '',
+        listImg: [
+            {
+                name : 'sub_photo_0',
+                data : ''
+            },
+            {
+                name : 'sub_photo_1',
+                data : ''
+            },
+            {
+                name : 'sub_photo_2',
+                data : ''
+            },
+            {
+                name : 'sub_photo_3',
+                data : ''
+            }
+        ]
+    }
 
+    console.log(productStore.editData.imgList)
+    
+    if( localStorage.getItem('PR_EDIT') ){
+        initialState = JSON.parse(localStorage.getItem('PR_EDIT'))
+    } else if( productStore.editStatus ) {
+        initialState = {
+            name: productStore.editData.data.name,
+            category: productStore.editData.data.category,
+            currency: productStore.editData.data.currency,
+            price: productStore.editData.data.price,
+            about: productStore.editData.data.description,
+            productModList: [],
+            cover: '',
+            listImg: []
+        }
+
+        if( productStore.editData.data.category === 0 ){
+            initialState.category = ''
+        }
+
+        
+
+        productStore.editData.modList.forEach( item => {
+            initialState.productModList.push({
+                modId: item.id_modifiers, 
+                listId: item.value, 
+                count: item.count, 
+                price: item.price
+            })
+        } )
+
+        
+            for( let i = 0; i < 4; i++ ){
+                
+                if( productStore.editData.imgList[i] ){
+                    initialState.listImg.push({
+                        name : 'sub_photo_' + i,
+                        data : productStore.editData.imgList[i]['img']
+                    }) 
+                }  else {
+                    initialState.listImg.push({
+                        name : 'sub_photo_' + i,
+                        data : ''
+                    }) 
+                }
+            }
+        
+            
+
+        if( productStore.editData.data.cover !== 'none.jpg' ){
+            initialState.cover = productStore.editData.data.cover
+        }
+
+        localStorage.setItem( 'PR_EDIT', JSON.stringify(initialState) )
+    }
+
+   
     const [productModList, setproductModList] = useState(initialState.productModList)
     const [successModal, setSuccessModal] = useState(false)
     const [addModModal, setAddModModal] = useState(false)
@@ -99,26 +149,12 @@ const ProductsEdit = () => {
     const [price, setPrice] = useState(initialState.price)
     const [about, setAbout] = useState(initialState.about)
     const [cover, setCover] = useState(initialState.cover)
-    const [listImg, setList] = useState([
-        {
-            name : 'sub_photo_0',
-            data : ''
-        },
-        {
-            name : 'sub_photo_1',
-            data : ''
-        },
-        {
-            name : 'sub_photo_2',
-            data : ''
-        },
-        {
-            name : 'sub_photo_3',
-            data : ''
-        }
-    ])
 
-  
+    const [listImg, setList] = useState( initialState.listImg )
+
+   
+
+
 
     
     const checkDisable = () => {
@@ -128,8 +164,17 @@ const ProductsEdit = () => {
         return true
     }
 
-
+/*
     if ( productData === undefined && productStore.status === 'load'  ) {
+        return <Navigate to={CONTROL_PANEL_ROUTE + '/products'} />
+    } 
+
+    */
+
+    
+   
+
+    if( productStore.status === 'error' ){
         return <Navigate to={CONTROL_PANEL_ROUTE + '/products'} />
     } 
 
@@ -152,7 +197,7 @@ const ProductsEdit = () => {
 
     const handlerChangeItemListModCount = (e, id) => {
         setproductModList(productModList.map(item => {
-            console.log(item.listId, id)
+            
             if (item.listId !== id) return item
             return {
                 ...item,
@@ -207,11 +252,20 @@ const ProductsEdit = () => {
         localStorage.removeItem('PR_EDIT')
     }
 
-    console.log(initialState)
-
 
     return (
         <Box>
+             <ModalAddModForProduct
+                open={addModModal}
+                onClose={
+                    () => {
+                        setAddModModal(false)
+                    }
+                }
+                modStore={modifiersStore.data}
+                listMod={productModList}
+                add={addLineModList}
+            />
             <Box className="cp_top_bar" display="flex" alignItems="center" justifyContent="space-between" p={2} >
                 <BackBtn />
                 <SaveBtn status={productStore.status} disabled={checkDisable()} variant="contained" color="success" onClick={handlerEdit} />
@@ -325,9 +379,11 @@ const ProductsEdit = () => {
 
                     <Box p={2} >
                         {productModList.map((item, key) =>
+                        
                             <Box sx={{ marginBottom: '20px' }} key={item.listId} display="flex" alignItems="center" justifyContent="space-between">
                                 <TextField
                                     fullWidth
+                                    
                                     value={modifiersStore.data.filter(i => i.id === item.modId)[0]['name']}
                                     label={getText('TEXT_ADD_MOD_FOR_PR_LABEL_1')}
                                     disabled

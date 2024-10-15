@@ -13,6 +13,7 @@ router.delete( '/:id', authMiddleware, userProductController.remove )
 
 router.get( '/mod_list/:id', authMiddleware, userProductController.getModListForProduct )
 
+router.get( '/:id', authMiddleware, userProductController.getProductById )
 
 
 module.exports = router

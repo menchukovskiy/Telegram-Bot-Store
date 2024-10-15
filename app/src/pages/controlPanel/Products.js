@@ -4,7 +4,7 @@ import { getText } from '../../utils/language'
 import { tokens } from "../../theme"
 import { useDispatch, useSelector } from 'react-redux';
 import { getAll } from '../../store/slice/categorySlice';
-import { getProducts, changePublic, copyProduct, removeProduct } from '../../store/slice/productSlice';
+import { getProducts, changePublic, copyProduct, removeProduct, editProduct } from '../../store/slice/productSlice';
 import AddBtn from '../../components/controlPanel/button/AddBtn'
 import { useNavigate, useLocation, } from 'react-router-dom'
 import { CUR_LIST, CUR } from '../../utils/const'
@@ -14,7 +14,8 @@ import EditIconBtn from '../../components/controlPanel/button/EditIconBtn'
 
 const Products = () => {
 
-    localStorage.removeItem('PR_EDIT')
+    
+
     const dispatch = useDispatch()
     const history = useNavigate()
     const user = useSelector(state => state.user.user)
@@ -33,10 +34,11 @@ const Products = () => {
 
         dispatch(getProducts([page, limit, category]))
 
+        localStorage.removeItem('PR_EDIT')
+
     }, [dispatch])
 
     
-
 
     const userCategory = categoryStore.data
     const userProduct = productStore.data
@@ -68,15 +70,17 @@ const Products = () => {
     }
 
     const handlerEditProduct = ( id ) => {
-        
-        history('edit/' + id)
+       dispatch( editProduct( id ) ).then(
+        () => {
+            history('edit/' + id)
+          }
+       )
     }
 
     const handlerRemoveProduct = ( id ) => {
          dispatch( removeProduct( [id, { limit: productStore.limit, page: productStore.page, category: productStore.category }] ) )
     }
 
-    //console.log( localStorage.getItem('token') )
 
 
     return (
