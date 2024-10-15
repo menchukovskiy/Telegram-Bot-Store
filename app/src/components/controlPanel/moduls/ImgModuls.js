@@ -9,21 +9,13 @@ const ImgModuls = ( { name, onChange, img } ) => {
     let initialState = {
         prevImg: ''
     }
-/*
-    if( typeof img === 'object' ){
-        const findImg = img.find(i => i.name === name)
-        if( findImg.data !== '' ){
-            initialState.prevImg = findImg.data
-        }
-    } else if( img !== '' ){
-        initialState.prevImg = img
+
+    if( img !== '' ){
+        initialState.prevImg = process.env.REACT_APP_API_URL + img
     }
-*/
+
     const [ prevImg, setPrevImg ] = useState( initialState.prevImg )
     const [ value, setValue ] = useState( '' )
-
-console.log(img)
-
    
 
     const handlerChange = ( e ) => {
@@ -39,11 +31,7 @@ console.log(img)
                     setPrevImg( reader.result )
                 };
                 reader.readAsDataURL(e.target.files[0]);
-                if( typeof img === 'object' && img !== null ){
-                    onChange(name, e.target.files[0])
-                } else {
-                    onChange(e.target.files[0])
-                } 
+                onChange(name, e.target.files[0])
            }
         } else {
             return

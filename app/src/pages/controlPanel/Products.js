@@ -68,6 +68,7 @@ const Products = () => {
     }
 
     const handlerEditProduct = ( id ) => {
+        
         history('edit/' + id)
     }
 

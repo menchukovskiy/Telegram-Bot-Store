@@ -102,19 +102,19 @@ const ProductsEdit = () => {
     const [listImg, setList] = useState([
         {
             name : 'sub_photo_0',
-            data : null
+            data : ''
         },
         {
             name : 'sub_photo_1',
-            data : null
+            data : ''
         },
         {
             name : 'sub_photo_2',
-            data : null
+            data : ''
         },
         {
             name : 'sub_photo_3',
-            data : null
+            data : ''
         }
     ])
 
@@ -197,6 +197,11 @@ const ProductsEdit = () => {
             }
         } ) )
     }
+
+    const changeCover = ( name, data ) => {
+        setCover( data )
+    }
+
 
     const handlerEdit = () => {
         localStorage.removeItem('PR_EDIT')
@@ -292,7 +297,7 @@ const ProductsEdit = () => {
                         <Box>
                             <Typography className='h_sub' variant="h6" gutterBottom>{getText('TEXT_MAIN_PRODUCT')}</Typography>
 
-                            <ImgModuls img={cover} onChange={ setCover } name='cover' ></ImgModuls>
+                            <ImgModuls img={cover} onChange={ changeCover } name='cover' ></ImgModuls>
 
                         </Box>
 
@@ -301,7 +306,7 @@ const ProductsEdit = () => {
                             <Box display="flex" justifyContent="space-between">
 
                                 { listImg.map( item => 
-                                    <ImgModuls key={item.name} img={listImg} onChange={ changeListImg } name={item.name} ></ImgModuls>
+                                    <ImgModuls key={item.name} img={item.data} onChange={ changeListImg } name={item.name} ></ImgModuls>
                                  ) }
 
                                 
