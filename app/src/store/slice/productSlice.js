@@ -75,8 +75,8 @@ export const copyProduct = createAsyncThunk(
     }
 )
 
-export const editProduct = createAsyncThunk(
-    'product/editProduct',
+export const getEditProduct = createAsyncThunk(
+    'product/getEditProduct',
     async function ( id, {dispatch} ) {
         
        try {
@@ -177,7 +177,7 @@ const productSlice = createSlice({
             }
         } )
 
-        .addCase( editProduct.fulfilled, (state, action)  => {
+        .addCase( getEditProduct.fulfilled, (state, action)  => {
             if( !action.payload ){
                 state.status = 'error';
             } else {
@@ -186,7 +186,7 @@ const productSlice = createSlice({
             }
         })
 
-        .addCase(editProduct.rejected, (state, action) => {
+        .addCase(getEditProduct.rejected, (state, action) => {
             setError(state, action)
         })
     }

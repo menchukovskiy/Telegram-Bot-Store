@@ -16,12 +16,9 @@ import AddBtn from '../../components/controlPanel/button/AddBtn';
 import DelIconBtn from '../../components/controlPanel/button/DelIconBtn';
 import { getAllMod } from '../../store/slice/modifiersSlice'
 import ModalAddModForProduct from '../../components/controlPanel/modal/ModalAddModForProduct';
-import { getProducts, editProduct } from '../../store/slice/productSlice';
-import { compose } from 'redux';
+import { getProducts } from '../../store/slice/productSlice';
 
 const ProductsEdit = () => {
-
-    
 
     const dispatch = useDispatch()
     const user = useSelector(state => state.user.user)
@@ -51,9 +48,6 @@ const ProductsEdit = () => {
 
     }, [dispatch])
 
-   
-    
-
     let initialState = {
         name: '',
         category: '',
@@ -82,7 +76,6 @@ const ProductsEdit = () => {
         ]
     }
 
-    console.log(productStore.editData.imgList)
     
     if( localStorage.getItem('PR_EDIT') ){
         initialState = JSON.parse(localStorage.getItem('PR_EDIT'))
