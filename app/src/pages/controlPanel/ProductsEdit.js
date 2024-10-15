@@ -59,7 +59,7 @@ const ProductsEdit = () => {
         }
 
         if( productData.description !== 'none.jpg' ){
-            initialState.cover = productData.description
+            initialState.cover = productData.cover
         }
 
         localStorage.setItem( 'PR_EDIT', JSON.stringify(initialState) )
@@ -202,6 +202,7 @@ const ProductsEdit = () => {
         localStorage.removeItem('PR_EDIT')
     }
 
+    console.log(initialState)
 
 
     return (

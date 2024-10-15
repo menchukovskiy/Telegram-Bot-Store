@@ -6,8 +6,25 @@ import CrossCloseBtn from '../button/CrossCloseBtn';
 
 const ImgModuls = ( { name, onChange, img } ) => {
 
-    const [ prevImg, setPrevImg ] = useState( '' )
+    let initialState = {
+        prevImg: ''
+    }
+/*
+    if( typeof img === 'object' ){
+        const findImg = img.find(i => i.name === name)
+        if( findImg.data !== '' ){
+            initialState.prevImg = findImg.data
+        }
+    } else if( img !== '' ){
+        initialState.prevImg = img
+    }
+*/
+    const [ prevImg, setPrevImg ] = useState( initialState.prevImg )
     const [ value, setValue ] = useState( '' )
+
+console.log(img)
+
+   
 
     const handlerChange = ( e ) => {
         
@@ -26,8 +43,7 @@ const ImgModuls = ( { name, onChange, img } ) => {
                     onChange(name, e.target.files[0])
                 } else {
                     onChange(e.target.files[0])
-                }
-                
+                } 
            }
         } else {
             return

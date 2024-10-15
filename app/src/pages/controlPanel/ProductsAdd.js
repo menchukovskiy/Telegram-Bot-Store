@@ -83,19 +83,19 @@ const ProductsAdd = () => {
     const [listImg, setList] = useState([
         {
             name : 'sub_photo_0',
-            data : null
+            data : ''
         },
         {
             name : 'sub_photo_1',
-            data : null
+            data : ''
         },
         {
             name : 'sub_photo_2',
-            data : null
+            data : ''
         },
         {
             name : 'sub_photo_3',
-            data : null
+            data : ''
         }
     ])
 
