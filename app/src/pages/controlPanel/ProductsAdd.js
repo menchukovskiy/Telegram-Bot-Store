@@ -205,7 +205,8 @@ const ProductsAdd = () => {
         listImg.forEach( item => formData.append(item.name, item.data) )
         
         formData.append('modifiers', JSON.stringify(productModList))
-       
+    
+
         dispatch( addProduct(formData) )
         setSuccessModal(true)
     }

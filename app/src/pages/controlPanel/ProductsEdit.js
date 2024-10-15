@@ -157,16 +157,6 @@ const ProductsEdit = () => {
         return true
     }
 
-/*
-    if ( productData === undefined && productStore.status === 'load'  ) {
-        return <Navigate to={CONTROL_PANEL_ROUTE + '/products'} />
-    } 
-
-    */
-
-    
-   
-
     if( productStore.status === 'error' ){
         return <Navigate to={CONTROL_PANEL_ROUTE + '/products'} />
     } 
@@ -243,8 +233,11 @@ const ProductsEdit = () => {
 
     const handlerEdit = () => {
         localStorage.removeItem('PR_EDIT')
+        const formData = new FormData()
+        listImg.forEach( item => formData.append(item.name, item.data) )
     }
 
+    
 
     return (
         <Box>

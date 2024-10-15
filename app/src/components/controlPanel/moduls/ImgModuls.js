@@ -42,11 +42,7 @@ const ImgModuls = ( { name, onChange, img } ) => {
     const clearPrevBoxImg = () => {
         setPrevImg('')
         setValue('')
-        if( typeof img === 'object' && img !== null ){
-            onChange(name, null)
-        } else {
-            onChange(null)
-        }
+        onChange(name, '')
     }
 
 
