@@ -31,7 +31,6 @@ const ModifiersEdit = () => {
     }
 
 
-    
     if( localStorage.getItem('MD_EDIT') ){
         initialState = JSON.parse(localStorage.getItem('MD_EDIT'))
     } else if( modData !== undefined ) {
@@ -93,7 +92,7 @@ const ModifiersEdit = () => {
          
     }, [dispatch])
 
-    if ( modData === undefined && modifiersStore.status === 'load' || initialState.name === '' ) {
+    if ( modData === undefined && modifiersStore.status === 'load'  ) {
         return <Navigate to={CONTROL_PANEL_ROUTE + '/modifiers'} />
     } 
 
