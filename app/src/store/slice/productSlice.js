@@ -187,7 +187,8 @@ const productSlice = createSlice({
                         modId: mod.id_modifiers, 
                         listId: mod.value, 
                         count: mod.count, 
-                        price: mod.price
+                        price: mod.price,
+                        id: mod.id
                     })
                 } )
             }

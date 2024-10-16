@@ -21,7 +21,7 @@ import { editProduct } from '../../store/slice/productSlice';
 const ProductsEdit = () => {
 
     const dispatch = useDispatch()
-    const user = useSelector(state => state.user.user)
+    
     const categoryStore = useSelector(state => state.category)
     const productStore = useSelector(state => state.product)
     const botStore = useSelector(state => state.bot)
@@ -102,7 +102,8 @@ const ProductsEdit = () => {
                 modId: item.id_modifiers, 
                 listId: item.value, 
                 count: item.count, 
-                price: item.price
+                price: item.price,
+                id: item.id
             })
         } )
 
@@ -146,10 +147,6 @@ const ProductsEdit = () => {
     const [cover, setCover] = useState(initialState.cover)
 
     const [listImg, setList] = useState( initialState.listImg )
-
-   
-
-
 
     
     const checkDisable = () => {
@@ -260,7 +257,7 @@ const ProductsEdit = () => {
         formData.append('modifiers', JSON.stringify(productModList))
 
        dispatch( editProduct( [id, formData] ) )
-       //setSuccessModal(true)
+       setSuccessModal(true)
 
     }
 

@@ -16,7 +16,7 @@ const ModalAddModForProduct = ({ open, onClose, modStore, listMod, add }) => {
     }
 
     const handlerAdd = () => {
-        add({ modId: mod, listId: modList, count: 0, price: '' })
+        add({ modId: mod, listId: modList, count: 0, price: '', id:0 })
         handlerClose()
     }
 

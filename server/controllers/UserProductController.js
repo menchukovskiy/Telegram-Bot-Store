@@ -283,6 +283,7 @@ class UserProductController {
         const { id } = req.params
         const userId = req.user.id
 
+        
 
         const findProductByid = await UserProduct.findOne({ where: { userId, id } })
 
@@ -292,6 +293,8 @@ class UserProductController {
 
         const userModifiers = await UserModifiers.findAll({ where: { userId: req.user.id } })
         let { name, category, price, currency, description, modifiers, cover } = req.body
+
+        const productModList = await UserProductsModifiers.findAll({ where: { userProductId: id } })
 
         description.slice(0, 999)
 
@@ -421,7 +424,51 @@ class UserProductController {
 
 
 
+    //Обновления модификаторов
+    if (modifiers) {
+        modifiers = JSON.parse(modifiers)
+        productModList.forEach( item => {
+            const upMod = modifiers.find( i => i.id === item.id )
+            if( upMod  ){
+                let upPrice = price
+                if (upMod.price !== '') {
+                    upPrice = upMod.price
+                }
+                UserProductsModifiers.update( {
+                    
+                    price: upPrice,
+                    count: upMod.count
+                },
+                { where: { id: item.id } } )
+            } else {
+                UserProductsModifiers.destroy({ where: { id: item.id } })
+            }
+        } )
 
+        const newMod = modifiers.filter( data => data.id === 0 )
+
+        if( newMod.length ){
+            newMod.forEach(mod => {
+                const check = userModifiers.find((item) => item.id === mod.modId)
+                if (check) {
+                    let modPrice = price
+                    if (mod.price !== '') {
+                        modPrice = mod.price
+                    }
+                    UserProductsModifiers.create({
+                        count: mod.count,
+                        price: modPrice,
+                        id_modifiers: mod.modId,
+                        value: mod.listId,
+                        userProductId: id
+                    })
+                }
+
+            })
+        }
+    }
+
+   
 
 
 
