@@ -211,10 +211,6 @@ const ProductsAdd = () => {
         setSuccessModal(true)
     }
 
-    console.log(modifiersStore.data)
-
-   
-
     return (
         <Box>
             <ModalAddModForProduct

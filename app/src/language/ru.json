@@ -76,6 +76,7 @@
     "TEXT_COUNT_PR" : "Кол-во",
     "TABLE_TITLE_NAME" : "Название",
     "TABLE_TITLE_PUBLIC" : "Вкл",
-    "NON_CATEGORY" : "Без категории"
+    "NON_CATEGORY" : "Без категории",
+    "TEXT_SUCCESS_EDIT_PR" : "Товар измене"
 
 }

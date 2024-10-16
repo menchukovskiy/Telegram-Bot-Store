@@ -16,7 +16,7 @@ import AddBtn from '../../components/controlPanel/button/AddBtn';
 import DelIconBtn from '../../components/controlPanel/button/DelIconBtn';
 import { getAllMod } from '../../store/slice/modifiersSlice'
 import ModalAddModForProduct from '../../components/controlPanel/modal/ModalAddModForProduct';
-import { getProducts } from '../../store/slice/productSlice';
+import { editProduct } from '../../store/slice/productSlice';
 
 const ProductsEdit = () => {
 
@@ -254,7 +254,8 @@ const ProductsEdit = () => {
         listImg.forEach( item => formData.append(item.name, item.data) )
         formData.append('modifiers', JSON.stringify(productModList))
 
-       
+       //dispatch( editProduct( [id, formData] ) )
+       setSuccessModal(true)
 
     }
 
@@ -262,6 +263,16 @@ const ProductsEdit = () => {
 
     return (
         <Box>
+            <ModalSuccess
+                message={'TEXT_SUCCESS_EDIT_PR'}
+                open={successModal}
+                onClose={
+                    () => {
+
+                        setSuccessModal(false)
+                    }
+                }
+            />
              <ModalAddModForProduct
                 open={addModModal}
                 onClose={
