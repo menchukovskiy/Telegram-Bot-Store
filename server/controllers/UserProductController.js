@@ -100,7 +100,7 @@ class UserProductController {
             const product = await UserProduct.create({ name, category, price, currency, description, cover: fileName, userId: req.user.id })
 
             if (req.files) {
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i <= 3; i++) {
                     let sub = 'sub_photo_' + i
                     if (req.files[sub]) {
 
@@ -233,7 +233,7 @@ class UserProductController {
 
     }
 
-    async getModListForProduct( req, res, next ){
+    async getModListForProduct(req, res, next) {
         const { id } = req.params
         const userId = req.user.id
 
@@ -245,11 +245,11 @@ class UserProductController {
 
         const productModList = await UserProductsModifiers.findAll({ where: { userProductId: id } })
 
-        res.json( productModList )
+        res.json(productModList)
 
     }
 
-    async getProductById(req, res, next){
+    async getProductById(req, res, next) {
         const { id } = req.params
         const userId = req.user.id
         const findProductByid = await UserProduct.findOne({ where: { userId, id } })
@@ -258,13 +258,13 @@ class UserProductController {
             return next(ApiError.badRequest('Product not found!'))
         }
 
-        const productModList = await UserProductsModifiers.findAll({ 
+        const productModList = await UserProductsModifiers.findAll({
             where: { userProductId: id },
             order: [
                 ['id', 'ASC'],
-            ], 
+            ],
         })
-        const productImgList = await ProductImage.findAll({ 
+        const productImgList = await ProductImage.findAll({
             where: { userProductId: id },
             order: [
                 ['id', 'ASC'],
@@ -279,13 +279,12 @@ class UserProductController {
 
     }
 
-    async edit(req, res, next){
+    async edit(req, res, next) {
         const { id } = req.params
         const userId = req.user.id
 
-        const findProductByid = await UserProduct.findOne({ where: { userId, id } })
 
-        
+        const findProductByid = await UserProduct.findOne({ where: { userId, id } })
 
         if (!findProductByid) {
             return next(ApiError.badRequest('Product not found!'))
@@ -297,7 +296,7 @@ class UserProductController {
         description.slice(0, 999)
 
         //Проверяем изменилас ли категория
-        if( category !== findProductByid.category ){
+        if (category !== findProductByid.category) {
             if (!category) {
                 category = 0
             }
@@ -316,11 +315,11 @@ class UserProductController {
         //Проверяем обложку товара
         let fileName = "none.jpg"
 
-        if( cover === 'file' ){
-            if(findProductByid.cover !== "none.jpg"){
+        if (cover === 'file') {
+            if (findProductByid.cover !== "none.jpg") {
                 fs.unlinkSync(path.resolve(__dirname, '..', 'static', findProductByid.cover))
             }
-            
+
 
             const { coverImg } = req.files
 
@@ -335,13 +334,13 @@ class UserProductController {
 
             fs.unlinkSync(path.resolve(__dirname, '..', 'static', fileNamePrev))
 
-        } else if( cover !== '' ){
-            if( cover === findProductByid.cover ){
+        } else if (cover !== '') {
+            if (cover === findProductByid.cover) {
                 fileName = findProductByid.cover
             }
         }
 
-        if( fileName === "none.jpg" && findProductByid.cover !== "none.jpg" ){
+        if (fileName === "none.jpg" && findProductByid.cover !== "none.jpg") {
             fs.unlinkSync(path.resolve(__dirname, '..', 'static', findProductByid.cover))
         }
 
@@ -355,18 +354,76 @@ class UserProductController {
         findProductByid.description = description
 
         const editProduct = await UserProduct.update(
-            { 
-                name: name, 
+            {
+                name: name,
                 price: price,
                 currency: currency,
                 cover: fileName,
                 category: category,
                 description: description
-            }, 
-            {where: { id: findProductByid.id } })
-        if( !editProduct ){
+            },
+            { where: { id: findProductByid.id } })
+
+        if (!editProduct) {
             return next(ApiError.badRequest('The product has not been renamed!'))
         }
+
+
+        //Обновления дополнительних фото
+        const productImgList = await ProductImage.findAll({
+            where: { userProductId: id },
+            order: [
+                ['id', 'ASC'],
+            ],
+        })
+
+
+        for (let i = 0; i <= 3; i++) {
+
+            let sub = 'sub_photo_' + i
+            if (req.files) {
+                if (req.files[sub]) {
+                    let fileNamePrev = req.files[sub].name
+                    await req.files[sub].mv(path.resolve(__dirname, '..', 'static', fileNamePrev))
+                    if (Image.checkImageType(path.resolve(__dirname, '..', 'static', fileNamePrev))) {
+                        let fileName = uuid.v4() + ".jpg"
+                        await Image.createImage(path.resolve(__dirname, '..', 'static', fileNamePrev), path.resolve(__dirname, '..', 'static', fileName), 800, null)
+
+                        if (Number(req.body[sub + '_id'])) {
+                            const checkSubImg = productImgList.filter(i => i.id === Number(req.body[sub + '_id']))
+
+                            if (checkSubImg.length) {
+                                fs.unlinkSync(path.resolve(__dirname, '..', 'static', checkSubImg[0]['img']))
+                            }
+                            ProductImage.update(
+                                {
+                                    img: fileName,
+                                },
+                                { where: { id: req.body[sub + '_id'] } })
+                        } else {
+                            ProductImage.create({
+                                img: fileName,
+                                userProductId: id
+                            })
+                        }
+                    }
+                    fs.unlinkSync(path.resolve(__dirname, '..', 'static', fileNamePrev))
+                }
+            } else {
+                if (req.body[sub] === '' && Number(req.body[sub + '_id'])) {
+                    const checkSubImg = productImgList.filter(i => i.id === Number(req.body[sub + '_id']))
+                    fs.unlinkSync(path.resolve(__dirname, '..', 'static', checkSubImg[0]['img']))
+                    await ProductImage.destroy({ where: { id: checkSubImg[0]['id'] } })
+                }
+            }
+
+        }
+
+
+
+
+
+
 
         return res.json({
             "id": id,

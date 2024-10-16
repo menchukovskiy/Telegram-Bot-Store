@@ -95,6 +95,7 @@ export const editProduct = createAsyncThunk(
         
        try {
             const data = await editProductById( id, formData )
+            console.log(data)
             //dispatch(editOne(data))
             return data
         } catch (e) {

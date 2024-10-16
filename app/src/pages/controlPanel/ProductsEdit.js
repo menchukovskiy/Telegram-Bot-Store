@@ -112,12 +112,14 @@ const ProductsEdit = () => {
                 if( productStore.editData.imgList[i] ){
                     initialState.listImg.push({
                         name : 'sub_photo_' + i,
-                        data : productStore.editData.imgList[i]['img']
+                        data : productStore.editData.imgList[i]['img'],
+                        id: productStore.editData.imgList[i]['id']
                     }) 
                 }  else {
                     initialState.listImg.push({
                         name : 'sub_photo_' + i,
-                        data : ''
+                        data : '',
+                        id: 0
                     }) 
                 }
             }
@@ -251,11 +253,14 @@ const ProductsEdit = () => {
             formData.append('coverImg', cover) 
         }
         
-        listImg.forEach( item => formData.append(item.name, item.data) )
+        listImg.forEach( item => {
+            formData.append(item.name, item.data) 
+            formData.append(item.name + '_id', item.id) 
+        })
         formData.append('modifiers', JSON.stringify(productModList))
 
        dispatch( editProduct( [id, formData] ) )
-       setSuccessModal(true)
+       //setSuccessModal(true)
 
     }
 
