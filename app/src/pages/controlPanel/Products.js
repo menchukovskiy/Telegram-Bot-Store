@@ -4,7 +4,7 @@ import { getText } from '../../utils/language'
 import { tokens } from "../../theme"
 import { useDispatch, useSelector } from 'react-redux';
 import { getAll } from '../../store/slice/categorySlice';
-import { getProducts, changePublic, copyProduct, removeProduct, getEditProduct } from '../../store/slice/productSlice';
+import { getProducts, changePublic, copyProduct, removeProduct, getEditProduct, setPage } from '../../store/slice/productSlice';
 import AddBtn from '../../components/controlPanel/button/AddBtn'
 import { useNavigate, useLocation, } from 'react-router-dom'
 import { CUR_LIST, CUR } from '../../utils/const'
@@ -12,6 +12,7 @@ import DelIconBtn from '../../components/controlPanel/button/DelIconBtn'
 import CopyBtnIcon from '../../components/controlPanel/button/CopyBtnIcon'
 import EditIconBtn from '../../components/controlPanel/button/EditIconBtn'
 import { getAllMod } from '../../store/slice/modifiersSlice'
+import PageNav from '../../components/controlPanel/moduls/PageNav'
 
 const Products = () => {
 
@@ -24,10 +25,6 @@ const Products = () => {
     const productStore = useSelector(state => state.product)
     const modifiersStore = useSelector(state => state.modifiers)
 
-    const page = 1
-    const limit = 5
-    const category = 0
-
 
     useEffect(() => {
         if (categoryStore.status !== 'load') {
@@ -37,12 +34,14 @@ const Products = () => {
         if (modifiersStore.status !== 'load') {
             dispatch(getAllMod())
         }
-
-        dispatch(getProducts([page, limit, category]))
-
         localStorage.removeItem('PR_EDIT')
 
-    }, [dispatch])
+    }, [])
+
+
+    useEffect( () => {
+        dispatch(getProducts([productStore.page, productStore.limit, productStore.category]))
+    }, [productStore.page, productStore.limit, productStore.category, productStore.count] )
 
     
 
@@ -57,10 +56,6 @@ const Products = () => {
         categoryData[element.id] = element.name
     });
 
-
-
-    const theme = useTheme()
-    const colors = tokens(theme.palette.mode)
 
     const addProduct = () => {
         history('add')
@@ -87,10 +82,14 @@ const Products = () => {
     }
 
     const handlerRemoveProduct = ( id ) => {
-         dispatch( removeProduct( [id, { limit: productStore.limit, page: productStore.page, category: productStore.category }] ) )
+        dispatch( removeProduct( [id, { limit: productStore.limit, page: productStore.page, category: productStore.category }] ) )
     }
 
-//console.log(localStorage.getItem('token'))
+    const hendlerPageNav = ( page ) => {
+        dispatch( setPage( page ) )
+    }
+
+
 
     return (
         <Box>
@@ -100,14 +99,16 @@ const Products = () => {
                 </Box>
                 <AddBtn onClick={addProduct} disabled={productStore.count >= user.info.package.product_limit} />
             </Box>
-            {productStore.count &&
+            <PageNav onChange={ hendlerPageNav } count={ productStore.count } limit={ productStore.limit } page={ productStore.page } />
+
+            {productStore.count > 0 ?
                 <Box className="table_title cp_top_bar" display="flex" alignItems="center" justifyContent="space-between" p={1}>
                     <Box className="w35">{getText('TABLE_TITLE_NAME')}</Box>
                     <Box className="w20">{getText('TEXT_CATEGORY_PRODUCT')}</Box>
                     <Box className="w20">{getText('TEXT_PRICE_PRODUCT')}</Box>
                     <Box className="w10">{getText('TABLE_TITLE_PUBLIC')}</Box>
                     <Box className="w20"></Box>
-                </Box>
+                </Box> : null
             }
             <Box>
                 {userProduct.map(product =>

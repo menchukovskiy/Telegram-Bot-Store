@@ -7,7 +7,7 @@ export const getProducts = createAsyncThunk(
       
        try {
             const data = await getProductsList( page, limit, category )
-            dispatch(setDataPegNav( { page, limit, category}));
+            //dispatch(setDataPegNav( { page, limit, category}));
             return data
         } catch (e) {
             throw new Error(e.response.data.message)
@@ -53,7 +53,6 @@ export const removeProduct = createAsyncThunk(
 
        try {
             const data = await removeProductById( id, pegData )
-           
             return data
         } catch (e) {
             throw new Error(e.response.data.message)
@@ -119,7 +118,7 @@ const productSlice = createSlice({
     initialState: {
         data: [],
         count: 0,
-        limit: 10,
+        limit: 5,
         page: 1,
         category: 0,
         status: null,
@@ -149,6 +148,10 @@ const productSlice = createSlice({
 
         editOne( state, action ){
             state.editData = action.payload
+        },
+
+        setPage( state, action ){
+            state.page = action.payload
         }
     },
 
@@ -176,6 +179,10 @@ const productSlice = createSlice({
             setDefault( state )
             state.data = action.payload.rows
             state.count = action.payload.count
+            const pageCount = Math.ceil( state.count / state.limit )
+            if( pageCount < state.page ){
+                state.page = pageCount
+            }
             state.status = 'load'
         } )
 
@@ -216,6 +223,6 @@ const productSlice = createSlice({
 
 });
 
-export const { editOnePublic, editOne, copy, setDataPegNav, getPegNavData } = productSlice.actions;
+export const { editOnePublic, editOne, copy, setPage, setDataPegNav, getPegNavData } = productSlice.actions;
 
 export default productSlice.reducer;

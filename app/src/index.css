@@ -321,6 +321,10 @@ body {
     text-align: center;
 }
 
+.table_title {
+    margin-top: var(--margin);
+}
+
 .w5 { width: 5%; max-width: 5%; }
 .w10 { width: 10%; max-width: 10%; }
 .w15 { width: 15%; max-width: 15%; }
