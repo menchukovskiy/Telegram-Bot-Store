@@ -135,7 +135,7 @@ const ProductsAdd = () => {
 
     const handlerChangeItemListModCount = (e, id) => {
         setproductModList(productModList.map(item => {
-            console.log(item.listId, id)
+            
             if (item.listId !== id) return item
             return {
                 ...item,
@@ -211,7 +211,9 @@ const ProductsAdd = () => {
         setSuccessModal(true)
     }
 
-    
+    console.log(modifiersStore.data)
+
+   
 
     return (
         <Box>

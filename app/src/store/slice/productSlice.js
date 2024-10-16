@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getProductsList, createProduct, changeProductPublic, removeProductById, getListModForProduct, getProductById } from '../../http/productAPI'
+import { getProductsList, createProduct, changeProductPublic, removeProductById, getListModForProduct, getProductById, editProductById } from '../../http/productAPI'
 
 export const getProducts = createAsyncThunk(
     'product/getProducts',
@@ -89,6 +89,20 @@ export const getEditProduct = createAsyncThunk(
     }
 )
 
+export const editProduct = createAsyncThunk(
+    'product/editProduct',
+    async function ( [ id, formData ], {dispatch} ) {
+        
+       try {
+            const data = await editProductById( id, formData )
+            //dispatch(editOne(data))
+            return data
+        } catch (e) {
+            throw new Error(e.response.data.message)
+        }
+    }
+)
+
 const setError = (state, action) => {
     state.status = 'error';
     state.error = action.error.message;
@@ -165,6 +179,7 @@ const productSlice = createSlice({
         } )
 
         .addCase( copyProduct.fulfilled, ( state, action ) => {
+            state.copyModList = []
             if( action.payload.length ){
                 action.payload.forEach( mod => {
                     state.copyModList.push({
@@ -188,6 +203,10 @@ const productSlice = createSlice({
 
         .addCase(getEditProduct.rejected, (state, action) => {
             setError(state, action)
+        })
+
+        .addCase( editProduct.fulfilled, (state, action)  => {
+           
         })
     }
 

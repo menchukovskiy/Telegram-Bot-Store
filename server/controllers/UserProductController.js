@@ -281,6 +281,9 @@ class UserProductController {
 
     }
 
+    async edit(req, res, next){
+
+    }
 }
 
 module.exports = new UserProductController()

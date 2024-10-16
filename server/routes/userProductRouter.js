@@ -15,5 +15,7 @@ router.get( '/mod_list/:id', authMiddleware, userProductController.getModListFor
 
 router.get( '/:id', authMiddleware, userProductController.getProductById )
 
+router.put('/:id', authMiddleware,  userProductController.edit)
+
 
 module.exports = router

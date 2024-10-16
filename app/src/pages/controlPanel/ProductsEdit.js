@@ -234,7 +234,28 @@ const ProductsEdit = () => {
     const handlerEdit = () => {
         localStorage.removeItem('PR_EDIT')
         const formData = new FormData()
+        formData.append('name', nameProduct.value)
+        formData.append('category', category)
+        formData.append('price', price)
+        formData.append('currency', currency)
+        formData.append('description', about)
+        if( typeof cover === 'string' ){
+            if( cover === '' ){
+                formData.append('cover', 'non.jpg') 
+            } else {
+                formData.append('cover', cover) 
+            }
+                       
+        } else {
+            formData.append('cover', 'file') 
+            formData.append('coverImg', cover) 
+        }
+        
         listImg.forEach( item => formData.append(item.name, item.data) )
+        formData.append('modifiers', JSON.stringify(productModList))
+
+       
+
     }
 
     

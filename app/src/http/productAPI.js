@@ -171,3 +171,14 @@ export const getProductById = async ( id ) => {
         }
     }
 }
+
+export const editProductById = async ( id, formData ) => {
+    if( localStorage.getItem('token') ){
+        try{
+            const { data } = await $authHost.put( 'api/product/' + id, formData )
+            return data
+        } catch(e){
+            return false
+        }
+    }
+}

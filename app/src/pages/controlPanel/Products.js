@@ -11,6 +11,7 @@ import { CUR_LIST, CUR } from '../../utils/const'
 import DelIconBtn from '../../components/controlPanel/button/DelIconBtn'
 import CopyBtnIcon from '../../components/controlPanel/button/CopyBtnIcon'
 import EditIconBtn from '../../components/controlPanel/button/EditIconBtn'
+import { getAllMod } from '../../store/slice/modifiersSlice'
 
 const Products = () => {
 
@@ -21,6 +22,7 @@ const Products = () => {
     const user = useSelector(state => state.user.user)
     const categoryStore = useSelector(state => state.category)
     const productStore = useSelector(state => state.product)
+    const modifiersStore = useSelector(state => state.modifiers)
 
     const page = 1
     const limit = 5
@@ -30,6 +32,10 @@ const Products = () => {
     useEffect(() => {
         if (categoryStore.status !== 'load') {
             dispatch(getAll())
+        }
+
+        if (modifiersStore.status !== 'load') {
+            dispatch(getAllMod())
         }
 
         dispatch(getProducts([page, limit, category]))
@@ -65,8 +71,11 @@ const Products = () => {
     }
 
     const handlerCopyProduct = ( id ) => {
-        dispatch( copyProduct( id ) )
-        history('add')
+        dispatch( copyProduct( id ) ).then(
+            () => {
+                history('add')
+            }
+        )
     }
 
     const handlerEditProduct = ( id ) => {
