@@ -83,8 +83,6 @@ class UserProductController {
             if (cover === 'file') {
                 const { coverImg } = req.files
 
-
-
                 let fileNamePrev = coverImg.name
 
                 await coverImg.mv(path.resolve(__dirname, '..', 'static', fileNamePrev))
@@ -282,6 +280,98 @@ class UserProductController {
     }
 
     async edit(req, res, next){
+        const { id } = req.params
+        const userId = req.user.id
+
+        const findProductByid = await UserProduct.findOne({ where: { userId, id } })
+
+        
+
+        if (!findProductByid) {
+            return next(ApiError.badRequest('Product not found!'))
+        }
+
+        const userModifiers = await UserModifiers.findAll({ where: { userId: req.user.id } })
+        let { name, category, price, currency, description, modifiers, cover } = req.body
+
+        description.slice(0, 999)
+
+        //Проверяем изменилас ли категория
+        if( category !== findProductByid.category ){
+            if (!category) {
+                category = 0
+            }
+
+            if (Number(category)) {
+                const findCategoryByid = await UserCategory.findOne({ where: { userId: req.user.id, id: category } })
+                if (!findCategoryByid) {
+                    category = 0
+                }
+            }
+        }
+        //Проверяем цену
+        if (price === '' || Number(price) < 0) {
+            price = 0
+        }
+        //Проверяем обложку товара
+        let fileName = "none.jpg"
+
+        if( cover === 'file' ){
+            if(findProductByid.cover !== "none.jpg"){
+                fs.unlinkSync(path.resolve(__dirname, '..', 'static', findProductByid.cover))
+            }
+            
+
+            const { coverImg } = req.files
+
+            let fileNamePrev = coverImg.name
+
+            await coverImg.mv(path.resolve(__dirname, '..', 'static', fileNamePrev))
+
+            if (Image.checkImageType(path.resolve(__dirname, '..', 'static', fileNamePrev))) {
+                fileName = uuid.v4() + ".jpg"
+                await Image.createImage(path.resolve(__dirname, '..', 'static', fileNamePrev), path.resolve(__dirname, '..', 'static', fileName), 800, null)
+            }
+
+            fs.unlinkSync(path.resolve(__dirname, '..', 'static', fileNamePrev))
+
+        } else if( cover !== '' ){
+            if( cover === findProductByid.cover ){
+                fileName = findProductByid.cover
+            }
+        }
+
+        if( fileName === "none.jpg" && findProductByid.cover !== "none.jpg" ){
+            fs.unlinkSync(path.resolve(__dirname, '..', 'static', findProductByid.cover))
+        }
+
+        //Обновляем товар
+
+        findProductByid.name = name
+        findProductByid.price = price
+        findProductByid.currency = currency
+        findProductByid.cover = fileName
+        findProductByid.category = category
+        findProductByid.description = description
+
+        const editProduct = await UserProduct.update(
+            { 
+                name: name, 
+                price: price,
+                currency: currency,
+                cover: fileName,
+                category: category,
+                description: description
+            }, 
+            {where: { id: findProductByid.id } })
+        if( !editProduct ){
+            return next(ApiError.badRequest('The product has not been renamed!'))
+        }
+
+        return res.json({
+            "id": id,
+        })
+
 
     }
 }

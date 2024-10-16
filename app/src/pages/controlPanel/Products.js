@@ -90,7 +90,7 @@ const Products = () => {
          dispatch( removeProduct( [id, { limit: productStore.limit, page: productStore.page, category: productStore.category }] ) )
     }
 
-
+//console.log(localStorage.getItem('token'))
 
     return (
         <Box>

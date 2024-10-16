@@ -43,7 +43,6 @@ const UserProduct = sequelize.define( 'user_product', {
     count: { type: DataTypes.INTEGER, defaultValue: 0 },
     orders: { type: DataTypes.INTEGER, defaultValue: 0 },
     description: { type: DataTypes.TEXT, allowNull: true },
-    count: { type: DataTypes.STRING, defaultValue: 0 },
     public: { type: DataTypes.INTEGER, defaultValue: 1 }
 } )
 
