@@ -4,7 +4,7 @@ import { getText } from '../../utils/language'
 import { tokens } from "../../theme"
 import { useDispatch, useSelector } from 'react-redux';
 import { getAll } from '../../store/slice/categorySlice';
-import { getProducts, changePublic, copyProduct, removeProduct, getEditProduct, setPage, setCategory, setLimit } from '../../store/slice/productSlice';
+import { getProducts, changePublic, copyProduct, removeProduct, getEditProduct, setPage, setCategory, setLimit, setOrders } from '../../store/slice/productSlice';
 import AddBtn from '../../components/controlPanel/button/AddBtn'
 import { useNavigate, useLocation, } from 'react-router-dom'
 import { CUR_LIST, CUR } from '../../utils/const'
@@ -97,6 +97,10 @@ const Products = () => {
         dispatch(setLimit(event.target.value))
     }
 
+    const handlerChangeOrder = ( order, sort ) => {
+        console.log(order, sort)
+        dispatch(setOrders({order, sort}))
+    }
     
 
     return (
@@ -146,6 +150,9 @@ const Products = () => {
                     <Box className="w35">
                         <FilterBnt 
                             text={getText('TABLE_TITLE_NAME')}
+                            row={productStore.order}
+                            sort={productStore.sort}
+                            onChange={handlerChangeOrder}
                         />
                     </Box>
                     <Box className="w20">{getText('TEXT_CATEGORY_PRODUCT')}</Box>

@@ -122,8 +122,8 @@ const productSlice = createSlice({
         limit: 10,
         page: 1,
         category: 0,
-        order: 'id',
-        sort: 'DESC',
+        order: 'name',
+        sort: 'ASC',
         status: null,
         error: null,
         copyId: 0,
@@ -166,6 +166,11 @@ const productSlice = createSlice({
             state.limit = action.payload
             state.page = 1
         },
+
+        setOrders( state, action ){
+            state.order = action.payload.order
+            state.sort = action.payload.sort
+        }
     },
 
     extraReducers: builder => {
@@ -237,6 +242,6 @@ const productSlice = createSlice({
 
 });
 
-export const { editOnePublic, editOne, copy, setPage, setCategory, setLimit, setDataPegNav, getPegNavData } = productSlice.actions;
+export const { editOnePublic, editOne, copy, setPage, setCategory, setLimit, setOrders, setDataPegNav, getPegNavData } = productSlice.actions;
 
 export default productSlice.reducer;

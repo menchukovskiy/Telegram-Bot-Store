@@ -321,6 +321,10 @@ body {
     text-align: center;
 }
 
+.filterBtn {
+    cursor: pointer;
+}
+
 .table_title {
     margin-top: var(--margin);
 }
