@@ -40,7 +40,6 @@ class UserProductController {
         })
     }
 
-
     async create(req, res, next) {
 
         const info = await UserInfo.findOne({ where: { userId: req.user.id } })
@@ -162,18 +161,30 @@ class UserProductController {
     }
 
     async getAll(req, res, next) {
-        const { category, page, limit } = req.query
+        const { category, page, limit, order, sort } = req.query
         let offset = page * limit - limit
         let products
-
-        if (Number(category)) {
-            products = await UserProduct.findAndCountAll({ where: { category, userId: req.user.id }, limit, offset })
-        } else {
-
-            products = await UserProduct.findAndCountAll({ where: { userId: req.user.id }, limit, offset })
+        let out = {
+            "rows" : {},
+            "count" : 0,
+            "countAll" : 0
         }
 
-        return res.json(products)
+        products = await UserProduct.findAndCountAll({ where: { userId: req.user.id }, limit, offset, order: [
+            [order, sort],
+        ], })
+
+        out.countAll = products.count
+
+        if (Number(category)) {
+            products = await UserProduct.findAndCountAll({ where: { category, userId: req.user.id }, limit, offset, order: [
+                [order, sort],
+            ], })
+        } 
+        out.rows = products.rows
+        out.count = products.count
+
+        return res.json(out)
 
     }
 

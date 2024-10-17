@@ -3,10 +3,10 @@ import { getProductsList, createProduct, changeProductPublic, removeProductById,
 
 export const getProducts = createAsyncThunk(
     'product/getProducts',
-    async function ( [ page = 1, limit = 10, category = 0 ], {dispatch} ) {
+    async function ( [ page = 1, limit = 10, category = 0, order = 'id', sort = 'DESC' ], {dispatch} ) {
       
        try {
-            const data = await getProductsList( page, limit, category )
+            const data = await getProductsList( page, limit, category, order, sort )
             //dispatch(setDataPegNav( { page, limit, category}));
             return data
         } catch (e) {
@@ -118,9 +118,12 @@ const productSlice = createSlice({
     initialState: {
         data: [],
         count: 0,
-        limit: 5,
+        countAll: 0,
+        limit: 10,
         page: 1,
         category: 0,
+        order: 'id',
+        sort: 'DESC',
         status: null,
         error: null,
         copyId: 0,
@@ -152,7 +155,17 @@ const productSlice = createSlice({
 
         setPage( state, action ){
             state.page = action.payload
-        }
+        },
+
+        setCategory( state, action ){
+            state.category = action.payload
+            state.page = 1
+        },
+
+        setLimit( state, action ){
+            state.limit = action.payload
+            state.page = 1
+        },
     },
 
     extraReducers: builder => {
@@ -163,6 +176,7 @@ const productSlice = createSlice({
             state.data = action.payload.rows
             state.count = action.payload.count
             state.status = 'load'
+            state.countAll = action.payload.countAll
         })
 
         .addCase(addProduct.fulfilled, ( state, action ) => {
@@ -223,6 +237,6 @@ const productSlice = createSlice({
 
 });
 
-export const { editOnePublic, editOne, copy, setPage, setDataPegNav, getPegNavData } = productSlice.actions;
+export const { editOnePublic, editOne, copy, setPage, setCategory, setLimit, setDataPegNav, getPegNavData } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -100,12 +100,12 @@ export const editModifiers = async ( id, name, list ) => {
     }
 }
 
-export const getProductsList = async ( page, limit, category ) => {
+export const getProductsList = async ( page, limit, category, order, sort ) => {
     if( localStorage.getItem('token') ){
         
         try{
             const {data} = await $authHost.get( 'api/product/all', { params: {
-            page, limit, category
+            page, limit, category, order, sort
         }} )
             return data
         } catch(e){

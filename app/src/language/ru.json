@@ -77,6 +77,7 @@
     "TABLE_TITLE_NAME" : "Название",
     "TABLE_TITLE_PUBLIC" : "Вкл",
     "NON_CATEGORY" : "Без категории",
-    "TEXT_SUCCESS_EDIT_PR" : "Товар измене"
+    "TEXT_SUCCESS_EDIT_PR" : "Товар измене",
+    "TEXT_ALL" : "Все"
 
 }

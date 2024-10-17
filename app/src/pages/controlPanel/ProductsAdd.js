@@ -112,7 +112,7 @@ const ProductsAdd = () => {
         return true
     }
 
-    if (productStore.count >= user.info.package.product_limit) {
+    if (productStore.countAll >= user.info.package.product_limit) {
         return <Navigate to={CONTROL_PANEL_ROUTE + '/products'} />
     }
 
