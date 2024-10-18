@@ -66,16 +66,16 @@ export const controlPanelMenuPages = [
 
     {
         type: "MenuItem",
-        path: "stock",
-        title: getText('NAV_CP_STOCK'),
-        icon:<InventoryOutlinedIcon/>
+        path: "products",
+        title: getText('NAV_CP_PRODUCTS'),
+        icon:<Inventory2OutlinedIcon/>
     },
 
     {
         type: "MenuItem",
-        path: "products",
-        title: getText('NAV_CP_PRODUCTS'),
-        icon:<Inventory2OutlinedIcon/>
+        path: "stock",
+        title: getText('NAV_CP_STOCK'),
+        icon:<InventoryOutlinedIcon/>
     },
 
     {
