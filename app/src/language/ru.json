@@ -78,6 +78,10 @@
     "TABLE_TITLE_PUBLIC" : "Вкл",
     "NON_CATEGORY" : "Без категории",
     "TEXT_SUCCESS_EDIT_PR" : "Товар измене",
-    "TEXT_ALL" : "Все"
+    "TEXT_ALL" : "Все",
+    "TEXT_COUNT_PR_VAL" : "шт",
+    "TEXT_PRODUCT_MOD_1" : "Модификатор товара",
+    "TEXT_CHOSE_PRODUCT" : "Товар",
+    "TEXT_SUCCESS_ADD_STOCK" : "Склад обновлен"
 
 }

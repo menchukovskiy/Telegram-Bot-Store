@@ -16,6 +16,7 @@ import ModifiersAdd from '../pages/controlPanel/ModifiersAdd'
 import ModifiersEdit from '../pages/controlPanel/ModifiersEdit'
 import ProductsAdd from '../pages/controlPanel/ProductsAdd'
 import ProductsEdit from '../pages/controlPanel/ProductsEdit'
+import StockAdd from '../pages/controlPanel/StockAdd'
 
 const ControlPanelRouter =  () => {
     
@@ -31,6 +32,7 @@ const ControlPanelRouter =  () => {
             <Route  path='/modifiers/add' element={<ModifiersAdd/>}  />
             <Route  path='/modifiers/edit/*' element={<ModifiersEdit/>}  />
             <Route  path='/stock' element={<Stock/>}  />
+            <Route  path='/stock/add' element={<StockAdd/>}  />
             <Route  path='/products' element={<Products/>}  />
             <Route  path='/products/add' element={<ProductsAdd/>}  />
             <Route  path='/products/edit/*' element={<ProductsEdit/>}  />

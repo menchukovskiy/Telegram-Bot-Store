@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAll } from '../../store/slice/categorySlice';
 import { getProducts, addProduct } from '../../store/slice/productSlice';
 import { Navigate } from "react-router-dom"
-import { CONTROL_PANEL_ROUTE, CUR_LIST, CUR, COUNT_SUB_PHOTO_PRODUCT } from '../../utils/const'
+import { CONTROL_PANEL_ROUTE, CUR_LIST, CUR } from '../../utils/const'
 import { Box, TextField, Typography, FormControl, Select, InputLabel, MenuItem, OutlinedInput, InputAdornment } from '@mui/material';
 import ModalSuccess from '../../components/controlPanel/modal/ModalSuccess';
 import BackBtn from '../../components/controlPanel/button/BackBtn';

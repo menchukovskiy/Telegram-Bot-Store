@@ -1,7 +1,7 @@
 const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { UserProduct, UserInfo, Package, UserProductsModifiers, ProductImage, UserCategory, UserModifiers, UserModifiersList } = require('../models/models')
+const { UserProduct, User, UserInfo, Package, UserProductsModifiers, ProductImage, UserCategory, UserModifiers, UserModifiersList } = require('../models/models')
 const uuid = require('uuid')
 const path = require('path');
 const fs = require('fs')
@@ -163,6 +163,10 @@ class UserProductController {
     async getAll(req, res, next) {
         const { category, page, limit, order, sort } = req.query
         let offset = page * limit - limit
+        if( !Number(page) ){
+            offset = limit
+        }
+        
         let products
         let out = {
             "rows" : {},
@@ -479,16 +483,101 @@ class UserProductController {
         }
     }
 
-   
-
-
-
         return res.json({
             "id": id,
         })
 
 
     }
+
+
+    async getStock( req, res, next ){
+
+        const { category, order, sort } = req.query
+
+        let out = {
+            "rows" : {},
+            "count" : 0,
+        }
+
+        let products = await UserProduct.findAndCountAll({ 
+            where: { userId: req.user.id},  
+            include: UserProductsModifiers,
+            order: [[order, sort]]
+        })
+
+        out.count = products.count
+
+        if (Number(category)) {
+            products = await UserProduct.findAndCountAll({ where: { category, userId: req.user.id }, order: [
+                [order, sort],
+            ],
+            include: UserProductsModifiers, })
+        } 
+
+        out.rows = products.rows
+ 
+        res.json(out) 
+
+    }
+
+    async updateStock( req, res, next ){
+
+        const userId = req.user.id
+        
+        const user = await User.findOne({ where: { id: userId } })
+        if (!user) {
+            return next(ApiError.internal( 'User is not found!' ))
+        }
+
+        const { listAdd }  = req.body
+        
+
+       let test = []
+
+      
+
+       
+        listAdd.forEach( item => {
+            let productId = item.value.value
+            let arrayProductInfo = []
+            if( typeof item.value.value === 'string' ){
+                
+                arrayProductInfo = item.value.value.split('|')
+                
+                productId = arrayProductInfo[0]
+            } 
+
+           
+
+            const findProductByid = UserProduct.findOne({ where: { userId, id: productId } })
+
+            if( findProductByid ){
+                if(typeof item.value.value === 'string'){
+                    UserProductsModifiers.update( {
+                        count: item.count
+                    },
+                    { where: { id: arrayProductInfo[1] } } )
+                } else {
+                    UserProduct.update( {
+                        count: item.count
+                    },
+                    { where: { id: productId } } )
+                }
+            }
+
+        } )
+
+
+
+
+        return res.status(200).send({
+            status: 'success'
+        })
+
+        
+    }
+
 }
 
 module.exports = new UserProductController()

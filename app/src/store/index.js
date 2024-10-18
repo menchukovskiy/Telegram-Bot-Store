@@ -4,6 +4,7 @@ import categorySlice from './slice/categorySlice';
 import productSlice from './slice/productSlice'
 import modifiersSlice from './slice/modifiersSlice'
 import botSlice from './slice/botSlice'
+import stockSlice from './slice/stockSlice'
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
         category: categorySlice,
         product: productSlice,
         modifiers: modifiersSlice,
-        bot: botSlice
+        bot: botSlice,
+        stock: stockSlice
     }
 }); 

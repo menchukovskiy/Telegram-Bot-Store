@@ -124,8 +124,7 @@ const ModifiersAdd = () => {
                         <Box>
                             {listMod.map((item,key) =>
                                 <Box key={item.id} display="flex" alignItems="center" justifyContent="space-between">
-                                    <TextField
-                                        
+                                    <TextField 
                                         value={item.name}
                                         fullWidth
                                         label={getText('TEXT_NAME_LIST_MOD')}

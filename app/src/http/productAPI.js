@@ -182,3 +182,31 @@ export const editProductById = async ( id, formData ) => {
         }
     }
 }
+
+export const getStokcUser = async (category, order, sort) => {
+    if( localStorage.getItem('token') ){
+        
+        try{
+            const {data} = await $authHost.get( 'api/product/stock', { params: {
+                category, order, sort
+        }} )
+            return data
+        } catch(e){
+            return false
+        }
+
+    }
+}
+
+export const updateStock = async ( listAdd ) => {
+    if( localStorage.getItem('token') ){
+        
+        try{
+            const {data} = await $authHost.put( 'api/product/stock', { listAdd }  )
+            return data
+        } catch(e){
+            return false
+        }
+
+    }
+}

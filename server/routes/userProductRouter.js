@@ -7,6 +7,10 @@ router.post('/create', authMiddleware, userProductController.create)
 
 router.get('/all', authMiddleware,  userProductController.getAll )
 
+router.get( '/stock', authMiddleware,  userProductController.getStock )
+
+router.put( '/stock', authMiddleware,  userProductController.updateStock )
+
 router.put('/public', authMiddleware,  userProductController.changePublic)
 
 router.delete( '/:id', authMiddleware, userProductController.remove )
@@ -16,6 +20,8 @@ router.get( '/mod_list/:id', authMiddleware, userProductController.getModListFor
 router.get( '/:id', authMiddleware, userProductController.getProductById )
 
 router.put('/:id', authMiddleware,  userProductController.edit)
+
+
 
 
 module.exports = router

@@ -98,7 +98,6 @@ const Products = () => {
     }
 
     const handlerChangeOrder = ( order, sort ) => {
-        console.log(order, sort)
         dispatch(setOrders({order, sort}))
     }
     
