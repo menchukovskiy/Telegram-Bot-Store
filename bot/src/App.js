@@ -13,7 +13,7 @@ function App() {
   console.log(tg)
   useEffect(() => {
     tg.ready();
-  }, [])
+  }, [tg])
 
   return (
     <div className="App">
