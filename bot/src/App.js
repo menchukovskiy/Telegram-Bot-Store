@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 
 import './App.css';
 import BottomNavBar from './components/BottomNavBar';
-
-
+import { BrowserRouter } from 'react-router-dom';
+import BotRouter from './router'
 function App() {
 
 
@@ -17,9 +17,10 @@ function App() {
   }, [tg])
 
   return (
-    <div className="App">
+    <BrowserRouter>
+      <BotRouter />
       <BottomNavBar />
-    </div>
+    </BrowserRouter>
   );
 }
 
