@@ -13,6 +13,7 @@ const BottomNavBar = () => {
         <Box className="bottomNavBar">
 
             <BottomNavigation
+                className="bottomNav"
                 showLabels
                 value={value}
                 onChange={(event, newValue) => {

@@ -18,3 +18,8 @@
     background: var(--tg-theme-bg-color);
     color: var(--tg-theme-text-color);
   }
+
+  .bottomNav {
+    background: var(--tg-theme-bg-color) !important;
+    color: var(--tg-theme-text-color) !;
+  }
