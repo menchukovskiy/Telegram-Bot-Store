@@ -20,7 +20,7 @@ const BottomNavBar = () => {
                 }
 
                 
-            }}>
+            }}
                 className="bottomNav"
                 showLabels
                 value={value}
