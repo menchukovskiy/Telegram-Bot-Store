@@ -13,6 +13,14 @@ const BottomNavBar = () => {
         <Box className="bottomNavBar">
 
             <BottomNavigation
+            sx={{
+                
+                "& .MuiBottomNavigationAction-root": {
+                    color: "var(--tg-theme-text-color)",
+                }
+
+                
+            }}>
                 className="bottomNav"
                 showLabels
                 value={value}

@@ -23,7 +23,3 @@
     background: var(--tg-theme-bg-color) !important;
     color: var(--tg-theme-text-color) ;
   }
-
-  .MuiBottomNavigationAction-root {
-    color: var(--tg-theme-text-color) !important;
-  }
