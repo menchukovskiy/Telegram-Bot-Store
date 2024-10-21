@@ -4,9 +4,14 @@
 /app/.pnp.js
 /server/node_modules
 
+/bot/node_modules
+/bot/.pnp
+/bot/.pnp.js
+
+
 /coverage
 
-/build
+/app/build
 /app/.DS_Store
 /app/.env.local
 /app/.env.development.local
@@ -16,3 +21,14 @@
 /app/npm-debug.log*
 /app/yarn-debug.log*
 /app/yarn-error.log*
+
+/bot/build
+/bot/.DS_Store
+/bot/.env.local
+/bot/.env.development.local
+/bot/.env.test.local
+/bot/.env.production.local
+
+/bot/npm-debug.log*
+/bot/yarn-debug.log*
+/bot/yarn-error.log*

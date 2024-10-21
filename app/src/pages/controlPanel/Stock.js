@@ -80,7 +80,7 @@ const Stock = () => {
                     if (product.user_products_modifiers) {
                         product.user_products_modifiers.forEach(mod => countProduct += mod.count)
                     }
-
+ 
                     return (
                         <div key={product.id}>
                         <Box  display="flex" alignItems="center" justifyContent="space-between" className="tableRow" p={2}  >
