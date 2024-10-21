@@ -8,3 +8,13 @@
     background: var(--tg-theme-bg-color);
     color: var(--tg-theme-text-color);
   }
+
+  .bottomNavBar {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+  }
