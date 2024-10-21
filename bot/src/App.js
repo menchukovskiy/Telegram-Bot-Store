@@ -12,6 +12,9 @@ function App() {
   
   const [value, setValue] = useState(0);
 
+  const tg = window.Telegram.WebApp;
+
+  console.log(tg)
   
 
   return (
