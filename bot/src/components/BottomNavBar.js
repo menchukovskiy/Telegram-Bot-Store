@@ -27,12 +27,11 @@ const BottomNavBar = () => {
                 value={value}
                 onChange={(event, newValue) => {
                     setValue(newValue);
-                    console.log(event)
                 }}
             >
                 <BottomNavigationAction component={Link} to="/" label="Store" icon={<StorefrontIcon />} />
-                <BottomNavigationAction component={Link} to="/cart" label="Store" label="Cart" icon={<ShoppingCartIcon />} />
-                <BottomNavigationAction component={Link} to="/account" label="Store" label="Acount" icon={<AccountCircleIcon />} />
+                <BottomNavigationAction component={Link} to="/cart" label="Cart" icon={<ShoppingCartIcon />} />
+                <BottomNavigationAction component={Link} to="/account" label="Acount" icon={<AccountCircleIcon />} />
             </BottomNavigation>
 
         </Box>
