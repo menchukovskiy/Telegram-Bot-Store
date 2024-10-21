@@ -3,9 +3,9 @@ import Box from '@mui/material/Box';
 
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const BottomNavBar = () => {
     const [value, setValue] = useState(0);
@@ -28,9 +28,9 @@ const BottomNavBar = () => {
                     setValue(newValue);
                 }}
             >
-                <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-                <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-                <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+                <BottomNavigationAction label="Store" icon={<StorefrontIcon />} />
+                <BottomNavigationAction label="Cart" icon={<ShoppingCartIcon />} />
+                <BottomNavigationAction label="Acount" icon={<AccountCircleIcon />} />
             </BottomNavigation>
 
         </Box>
