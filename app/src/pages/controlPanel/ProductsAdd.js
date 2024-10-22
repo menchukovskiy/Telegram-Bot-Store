@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { getText } from '../../utils/language'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAll } from '../../store/slice/categorySlice';
@@ -21,7 +21,6 @@ import ModalAddModForProduct from '../../components/controlPanel/modal/ModalAddM
 const ProductsAdd = () => {
  
     const dispatch = useDispatch()
-    
     const user = useSelector(state => state.user.user)
     const categoryStore = useSelector(state => state.category)
     const productStore = useSelector(state => state.product)
@@ -36,7 +35,6 @@ const ProductsAdd = () => {
         about: '',
         productModList: []
     }
-
 
     useEffect(() => {
         if (botStore.status !== 'load') {
@@ -103,14 +101,12 @@ const ProductsAdd = () => {
         }
     ])
 
-    
-
-    const checkDisable = () => {
+    const checkDisable = useCallback( () => {
         if (nameProduct.value !== '') {
             return false
         }
         return true
-    }
+    }, [nameProduct.value])
 
     if (productStore.countAll >= user.info.package.product_limit) {
         return <Navigate to={CONTROL_PANEL_ROUTE + '/products'} />
@@ -123,7 +119,7 @@ const ProductsAdd = () => {
     const handleChangeCurrency = (event) => {
         setCurrency(event.target.value);
         setCurrencyIcon(CUR_LIST[event.target.value])
-    };
+    }
 
     const handlerMod = () => {
         setAddModModal(true)
@@ -185,8 +181,6 @@ const ProductsAdd = () => {
         setCover( data )
     }
 
-    
-
     const createProduct = () => {
         const formData = new FormData()
         formData.append('name', nameProduct.value)
@@ -224,6 +218,7 @@ const ProductsAdd = () => {
                 listMod={productModList}
                 add={addLineModList}
             />
+
             <ModalSuccess
                 message={'TEXT_SUCCESS_ADD_PRODUCT'}
                 open={successModal}
