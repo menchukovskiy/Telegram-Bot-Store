@@ -1,13 +1,10 @@
 import React, {useRef, useEffect, useState} from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ColorModeContext, useMode } from '../theme'
 import { Box, CssBaseline, ThemeProvider } from '@mui/material'
 import TopBar from '../components/controlPanel/TopBar'
 import SideBar from '../components/controlPanel/SideBar'
 import ControlPanelRouter from '../components/ControlPanelRouter';
 import { tokens } from '../theme';
-
-
 
 const ControlPanel = () => {
 
@@ -46,6 +43,7 @@ const ControlPanel = () => {
                     }} className='content' p={2}>
                         <TopBar />
                         <Box sx={{
+                            position: 'relative',
                             "& .addButton:hover" : {
                                 background: `${colors.blue[600]} `,
                             },
@@ -55,6 +53,7 @@ const ControlPanel = () => {
                         }}>
                            
                             <ControlPanelRouter />
+                            
                         </Box>
                     </Box>
                 </div>

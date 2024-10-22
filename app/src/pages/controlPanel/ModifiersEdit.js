@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import BackBtn from '../../components/controlPanel/button/BackBtn';
 import { Box, TextField, Typography } from '@mui/material';
 import SaveBtn from '../../components/controlPanel/button/SaveBtn';
@@ -8,14 +8,13 @@ import { getText } from '../../utils/language';
 import { useInput } from '../../utils/hooks';
 import AddBtn from '../../components/controlPanel/button/AddBtn';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate, Navigate } from "react-router-dom"
+import { useLocation, Navigate } from "react-router-dom"
 import { getAllMod, edit } from '../../store/slice/modifiersSlice'
 import { CONTROL_PANEL_ROUTE } from '../../utils/const'
 
 const ModifiersEdit = () => {
 
     const location = useLocation()
-    const history = useNavigate()
     const pathArray = location.pathname.split('/')
     const id = parseInt(pathArray[pathArray.length - 1])
 
@@ -46,13 +45,11 @@ const ModifiersEdit = () => {
     const nameMod = useInput(initialState.name, { isEmpty: true, maxLength: 200 })
     const [listMod, setListMod] = useState(initialState.list)
 
-    const handlerAddList = () => {
+    const handlerAddList = useCallback( () => {
         setListMod([...listMod, { id:listMod[listMod.length - 1].id + 1, name: '' } ])
-      
-    }
+    },[listMod])
 
-    const handlerChangeItemListMod = ( e, id ) => {
-
+    const handlerChangeItemListMod = useCallback(( e, id ) => {
         setListMod( listMod.map( item => {
             if( item.id !== id ) return item
             return {
@@ -60,13 +57,13 @@ const ModifiersEdit = () => {
                 name: e.target.value
             }
         } ) )
-    }
+    },[listMod])
 
-    const handlerRemoveList = ( id ) => {
+    const handlerRemoveList = useCallback(( id ) => {
         setListMod( listMod.filter( item => item.id !== id ) )
-    }
+    },[listMod])
 
-    const checkDisable = () => {
+    const checkDisable = useCallback(() => {
        if( listMod[0].name.length ){
             if(!nameMod.inputValid){
                 return false
@@ -77,7 +74,7 @@ const ModifiersEdit = () => {
 
         return true
         
-    }
+    },[listMod])
 
     const editMod = () => {
         dispatch( edit( [ id, nameMod.value, listMod ] ) )

@@ -1,9 +1,12 @@
-
+import React from 'react';
 
 const Shop = () => {
     return (
-        <div></div>
-    )
-}
+        
+           <div>Shop</div>
+            
+        
+    );
+};
 
-export default Shop
+export default Shop;

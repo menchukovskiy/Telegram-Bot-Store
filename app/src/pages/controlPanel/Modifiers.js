@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useLocation, } from 'react-router-dom'
-import { Box, Typography, useTheme } from '@mui/material'
+import React, { useEffect } from 'react'
+import { useNavigate,  } from 'react-router-dom'
+import { Box, Typography } from '@mui/material'
 import AddBtn from '../../components/controlPanel/button/AddBtn'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllMod, removeMod, copyMod } from '../../store/slice/modifiersSlice'
@@ -42,7 +42,6 @@ const Modifiers = () => {
         history('edit/' + id)
     }
 
-    
 
     return (
         <Box>

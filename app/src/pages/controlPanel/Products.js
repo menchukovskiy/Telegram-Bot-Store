@@ -1,13 +1,13 @@
 import { Box, Switch, Typography, FormControl, Select, InputLabel, MenuItem } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { getText } from '../../utils/language'
 import { tokens } from "../../theme"
 import { useDispatch, useSelector } from 'react-redux';
 import { getAll } from '../../store/slice/categorySlice';
 import { getProducts, changePublic, copyProduct, removeProduct, getEditProduct, setPage, setCategory, setLimit, setOrders } from '../../store/slice/productSlice';
 import AddBtn from '../../components/controlPanel/button/AddBtn'
-import { useNavigate, useLocation, } from 'react-router-dom'
-import { CUR_LIST, CUR } from '../../utils/const'
+import { useNavigate} from 'react-router-dom'
+import { CUR_LIST} from '../../utils/const'
 import DelIconBtn from '../../components/controlPanel/button/DelIconBtn'
 import CopyBtnIcon from '../../components/controlPanel/button/CopyBtnIcon'
 import EditIconBtn from '../../components/controlPanel/button/EditIconBtn'

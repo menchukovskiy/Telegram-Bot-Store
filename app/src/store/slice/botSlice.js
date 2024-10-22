@@ -13,10 +13,6 @@ export const getInfo = createAsyncThunk(
     }
 )
 
-const setError = (state, action) => {
-    state.status = 'error';
-    state.error = action.error.message;
-}
 
 const setDefault = (state) => {
     state.status = null;

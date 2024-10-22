@@ -3,7 +3,7 @@ import { getText } from '../../utils/language'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, Navigate } from "react-router-dom"
 import { getAll } from '../../store/slice/categorySlice';
-import { CONTROL_PANEL_ROUTE, CUR_LIST, CUR, COUNT_SUB_PHOTO_PRODUCT } from '../../utils/const'
+import { CONTROL_PANEL_ROUTE, CUR_LIST, CUR } from '../../utils/const'
 import { Box, TextField, Typography, FormControl, Select, InputLabel, MenuItem, OutlinedInput, InputAdornment } from '@mui/material';
 import ModalSuccess from '../../components/controlPanel/modal/ModalSuccess';
 import BackBtn from '../../components/controlPanel/button/BackBtn';
@@ -31,7 +31,6 @@ const ProductsEdit = () => {
     const pathArray = location.pathname.split('/')
     const id = parseInt(pathArray[pathArray.length - 1])
 
-    const productData = productStore.data.find(pr => pr.id === id)
 
     useEffect(() => {
         if (botStore.status !== 'load') {

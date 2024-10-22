@@ -182,6 +182,15 @@ const productSlice = createSlice({
             state.count = action.payload.count
             state.status = 'load'
             state.countAll = action.payload.countAll
+        }) 
+
+        .addCase(getProducts.pending, (state, action) => {
+            setDefault( state )
+            state.status = 'waiting'
+        })
+
+        .addCase(getProducts.rejected, (state, action) => {
+            setError(state, action)
         })
 
         .addCase(addProduct.fulfilled, ( state, action ) => {
@@ -189,10 +198,28 @@ const productSlice = createSlice({
             state.status = 'load'
         })
 
+        .addCase(addProduct.pending, (state, action) => {
+            setDefault( state )
+            state.status = 'waiting'
+        })
+
+        .addCase(addProduct.rejected, (state, action) => {
+            setError(state, action)
+        })
+
         .addCase(changePublic.fulfilled, ( state, action ) => {
             setDefault( state )
             state.status = 'load'
         } )
+
+        .addCase(changePublic.pending, (state, action) => {
+            setDefault( state )
+            state.status = 'waiting'
+        })
+
+        .addCase(changePublic.rejected, (state, action) => {
+            setError(state, action)
+        })
 
         .addCase(removeProduct.fulfilled, ( state, action ) => {
             setDefault( state )
@@ -204,6 +231,15 @@ const productSlice = createSlice({
             }
             state.status = 'load'
         } )
+
+        .addCase(removeProduct.pending, (state, action) => {
+            setDefault( state )
+            state.status = 'waiting'
+        })
+
+        .addCase(removeProduct.rejected, (state, action) => {
+            setError(state, action)
+        })
 
         .addCase( copyProduct.fulfilled, ( state, action ) => {
             state.copyModList = []
@@ -220,6 +256,15 @@ const productSlice = createSlice({
             }
         } )
 
+        .addCase(copyProduct.pending, (state, action) => {
+            setDefault( state )
+            state.status = 'waiting'
+        })
+
+        .addCase(copyProduct.rejected, (state, action) => {
+            setError(state, action)
+        })
+
         .addCase( getEditProduct.fulfilled, (state, action)  => {
             if( !action.payload ){
                 state.status = 'error';
@@ -229,12 +274,26 @@ const productSlice = createSlice({
             }
         })
 
+        .addCase(getEditProduct.pending, (state, action) => {
+            setDefault( state )
+            state.status = 'waiting'
+        })
+
         .addCase(getEditProduct.rejected, (state, action) => {
             setError(state, action)
         })
 
         .addCase( editProduct.fulfilled, (state, action)  => {
            
+        })
+
+        .addCase( editProduct.pending, (state, action) => {
+            setDefault( state )
+            state.status = 'waiting'
+        })
+
+        .addCase(editProduct.rejected, (state, action) => {
+            setError(state, action)
         })
     }
 

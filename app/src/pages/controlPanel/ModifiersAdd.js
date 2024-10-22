@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import BackBtn from '../../components/controlPanel/button/BackBtn';
 import { Box, TextField, Typography } from '@mui/material';
 import SaveBtn from '../../components/controlPanel/button/SaveBtn';
@@ -14,6 +14,8 @@ import { CONTROL_PANEL_ROUTE } from '../../utils/const'
 
 
 const ModifiersAdd = () => {
+
+    console.log('ModAdd')
 
     const dispatch = useDispatch()
 
@@ -45,16 +47,20 @@ const ModifiersAdd = () => {
     const nameMod = useInput(initialState.name, { isEmpty: true, maxLength: 200 })
     const [listMod, setListMod] = useState(initialState.list)
 
-    const handlerAddList = () => {
+    const handlerAddList = useCallback( () => {
         setListMod([...listMod, { id:listMod[listMod.length - 1].id + 1, name: '' } ])
       
-    }
+    },[listMod])
 
-    const handlerRemoveList = ( id ) => {
+    const checkDisableAdd = useCallback( () => {
+        return listMod.length < 20 ? false : true
+    }, [listMod] )
+
+    const handlerRemoveList = useCallback( ( id ) => {
         setListMod( listMod.filter( item => item.id !== id ) )
-    }
+    },[listMod])
 
-    const handlerChangeItemListMod = ( e, id ) => {
+    const handlerChangeItemListMod = useCallback(( e, id ) => {
 
         setListMod( listMod.map( item => {
             if( item.id !== id ) return item
@@ -63,14 +69,14 @@ const ModifiersAdd = () => {
                 name: e.target.value
             }
         } ) )
-    }
+    }, [listMod])
 
     const addMod = () => {
         dispatch( add( [ nameMod.value, listMod ] ) )
         setSuccessModal(true)
     }
 
-    const checkDisable = () => {
+    const checkDisable = useCallback( () => {
         if( listMod[0].name.length ){
             if(!nameMod.inputValid){
                 return false
@@ -80,7 +86,7 @@ const ModifiersAdd = () => {
            } 
 
         return true
-    }
+    },[listMod])
 
 
     if ( modifiersStore.count >= modifiersStore.maxCount  ) {
@@ -138,7 +144,7 @@ const ModifiersAdd = () => {
 
                             )}
                             <Box display="flex" justifyContent="end">
-                                <AddBtn onClick={handlerAddList} disabled={listMod.length < 20 ? false : true} />
+                                <AddBtn onClick={handlerAddList} disabled={checkDisableAdd()} />
                             </Box>
 
                         </Box>
