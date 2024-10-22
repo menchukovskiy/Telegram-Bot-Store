@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import {Route, Routes } from 'react-router-dom'
 import { authRoutes, publicRoutes } from '../router'
-import { Context } from '../index'
 import { observer } from "mobx-react-lite"
 import { useSelector } from 'react-redux'
 

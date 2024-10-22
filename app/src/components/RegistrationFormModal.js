@@ -1,11 +1,10 @@
-import React, { useRef, useState, useContext } from "react";
+import React from "react";
 import Button from "react-bootstrap/esm/Button";
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form'
 import Container from "react-bootstrap/esm/Container";
 import { getText } from '../utils/language';
 import { useInput } from "../utils/hooks";
-import { registration } from "../http/userAPI";
 import { observer } from "mobx-react-lite"
 import { useNavigate } from 'react-router-dom'
 import { CONTROL_PANEL_ROUTE } from '../utils/const';

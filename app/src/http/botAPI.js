@@ -1,4 +1,4 @@
-import { $host, $authHost } from './index'
+import { $authHost } from './index'
 
 export const getBot = async () => {
     if( localStorage.getItem('token') ){

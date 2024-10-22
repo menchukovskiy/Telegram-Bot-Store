@@ -1,12 +1,12 @@
-import { Box, Switch, Typography, FormControl, Select, InputLabel, MenuItem } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Box, Typography } from '@mui/material'
+import React, { useEffect} from 'react'
 import { getText } from '../../utils/language'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAll } from '../../store/slice/categorySlice';
-import { useNavigate, useLocation, } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import { getAllMod } from '../../store/slice/modifiersSlice'
 import { getStock, setOrders } from '../../store/slice/stockSlice'
-import { CUR_LIST, CUR } from '../../utils/const'
+import { CUR_LIST} from '../../utils/const'
 import FilterBnt from '../../components/controlPanel/moduls/FilterBnt';
 import StockModItemList from '../../components/controlPanel/moduls/StockModItemList';
 import AddBtn from '../../components/controlPanel/button/AddBtn';

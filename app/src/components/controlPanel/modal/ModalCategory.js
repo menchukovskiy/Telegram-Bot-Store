@@ -1,4 +1,4 @@
-import { DialogActions, Dialog, DialogContent, TextField, Button, DialogTitle } from "@mui/material"
+import { DialogActions, Dialog, DialogContent, TextField, DialogTitle } from "@mui/material"
 import { getText } from "../../../utils/language"
 import CancelBtn from "../button/CancelBtn";
 import SaveBtn from "../button/SaveBtn";
@@ -15,11 +15,6 @@ const ModalCategory = ({ open, onClose, colors, input }) => {
         dispatch( add( [ input.value, 0 ] ) )
         onClose()
     }
-
-    const style = {
-        background: `${colors.black[900]} !important`,
-        boxShadow: 24,
-    };
 
     
 

@@ -1,10 +1,7 @@
 import { useState } from "react"
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar"
 import { Box, IconButton, Typography, useTheme } from "@mui/material"
-import { Link } from "react-router-dom"
 import { tokens } from "../../theme"
-import { getText } from "../../utils/language"
-
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import SideBarMenu from './SideBarMenu'
 

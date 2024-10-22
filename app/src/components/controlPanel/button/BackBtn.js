@@ -1,6 +1,6 @@
 import { Button, useTheme } from '@mui/material';
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { getText } from "../../../utils/language"
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
 import { tokens } from "../../../theme"

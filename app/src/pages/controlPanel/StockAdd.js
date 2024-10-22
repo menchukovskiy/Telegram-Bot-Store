@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { getText } from '../../utils/language'
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Autocomplete, TextField, Typography } from '@mui/material';
+import { Box, Autocomplete, TextField } from '@mui/material';
 import ModalSuccess from '../../components/controlPanel/modal/ModalSuccess';
 import BackBtn from '../../components/controlPanel/button/BackBtn';
 import SaveBtn from '../../components/controlPanel/button/SaveBtn';
-import { useInput } from '../../utils/hooks';
 import AddBtn from '../../components/controlPanel/button/AddBtn';
 import DelIconBtn from '../../components/controlPanel/button/DelIconBtn';
 import { getStock, addStock } from '../../store/slice/stockSlice'

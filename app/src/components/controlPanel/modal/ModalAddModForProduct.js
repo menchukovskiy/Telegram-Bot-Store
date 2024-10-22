@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { DialogActions, Dialog, DialogContent, FormControl, Select, InputLabel, MenuItem, DialogTitle } from "@mui/material"
 import { getText } from "../../../utils/language"
 import CancelBtn from "../button/CancelBtn";
@@ -9,11 +9,11 @@ const ModalAddModForProduct = ({ open, onClose, modStore, listMod, add }) => {
     const [ mod, setMod ] = useState('')
     const [ modList, setModList ] = useState('')
 
-    const handlerClose = () => {
+    const handlerClose = useCallback( () => {
         onClose()
         setMod('')
         setModList('')
-    }
+    }, [] )
 
     const handlerAdd = () => {
         add({ modId: mod, listId: modList, count: 0, price: '', id:0 })
@@ -26,12 +26,9 @@ const ModalAddModForProduct = ({ open, onClose, modStore, listMod, add }) => {
         setModList('')
     }
 
-    const handleChangeModList = (event) => {
+    const handleChangeModList = useCallback( (event) => {
         setModList( event.target.value )
-    }
-
-    
-
+    }, [modList] )
   
     return (
         <Dialog

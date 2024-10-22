@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react'
-import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar"
-import { Box, IconButton, Typography, useTheme } from "@mui/material"
+import React, { useState } from 'react'
+import { MenuItem, SubMenu } from "react-pro-sidebar"
+import { Box } from "@mui/material"
 import { Link, useLocation } from "react-router-dom"
-import { tokens } from "../../theme"
 import { controlPanelMenuPages } from '../../utils/controlPanelPages'
 
 const SideBarMenu = (props) => {
