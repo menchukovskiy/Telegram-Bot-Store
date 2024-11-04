@@ -3,8 +3,10 @@ import React from 'react';
 
 const Store = () => {
     return (
-        <Box>
-            
+        <Box className="wrap" >
+            <Box className="storeBanner">
+
+            </Box>
         </Box>
     );
 };
