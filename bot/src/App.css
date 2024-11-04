@@ -22,4 +22,5 @@
   .bottomNav {
     background: var(--tg-theme-bg-color) !important;
     color: var(--tg-theme-text-color) ;
+    margin-bottom: 30px;
   }

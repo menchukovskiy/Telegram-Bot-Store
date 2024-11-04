@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 
 const BottomNavBar = () => {
     const [value, setValue] = useState(0);

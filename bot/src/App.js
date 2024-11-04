@@ -5,12 +5,8 @@ import BottomNavBar from './components/BottomNavBar';
 import { BrowserRouter } from 'react-router-dom';
 import BotRouter from './router'
 function App() {
-
-
-
   const tg = window.Telegram.WebApp;
 
-  console.log(tg)
   useEffect(() => {
     tg.expand()
     tg.ready();
